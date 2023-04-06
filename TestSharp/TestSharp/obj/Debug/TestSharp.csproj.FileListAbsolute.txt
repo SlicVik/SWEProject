@@ -1,0 +1,8 @@
+C:\Users\12482\source\repos\EECS 3550\TestSharp\TestSharp\bin\Debug\TestSharp.exe.config
+C:\Users\12482\source\repos\EECS 3550\TestSharp\TestSharp\bin\Debug\TestSharp.exe
+C:\Users\12482\source\repos\EECS 3550\TestSharp\TestSharp\bin\Debug\TestSharp.pdb
+C:\Users\12482\source\repos\EECS 3550\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.AssemblyReference.cache
+C:\Users\12482\source\repos\EECS 3550\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.SuggestedBindingRedirects.cache
+C:\Users\12482\source\repos\EECS 3550\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.CoreCompileInputs.cache
+C:\Users\12482\source\repos\EECS 3550\TestSharp\TestSharp\obj\Debug\TestSharp.exe
+C:\Users\12482\source\repos\EECS 3550\TestSharp\TestSharp\obj\Debug\TestSharp.pdb
