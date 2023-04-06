@@ -9,6 +9,9 @@ namespace TestSharp
      internal class Program
      {
 
+           public static string[] loginUN = new string[50]; // username array
+           public static string[] loginPWD = new string[50]; // password array
+
           static void startCustomer()
           {
                Console.WriteLine("Project Air");
@@ -356,20 +359,48 @@ namespace TestSharp
                 Console.WriteLine("Password: ");
                 password = Console.ReadLine();
 
-               // if ((usrID != AVALIDUSERNAME) && (password != AVALIDPASSWORD))
-               // {
-               //     Console.WriteLine("Account Made!");
-               // }
+                if ((usrID == loginUN[0]) && (password == loginPWD[0]))
+                {
+                    startLoadEngineer();
+                }
+                else if((usrID == loginUN[1]) && (password == loginPWD[1]))
+                { 
+                    startMarkMNG();
+                }
+                else if((usrID == loginUN[2]) && (password == loginPWD[2]))
+                { 
+                    startAccoMNG();
+                }
+                else if((usrID == loginUN[3]) && (password == loginPWD[3]))
+                { 
+                    startFligMNG();
+                }
+                 else if((usrID == loginUN[4]) && (password == loginPWD[4]))
+                { 
+                    startCustomer();
+                }
             }
-
           
         }
+
+        static void startMarkMNG()
+        { 
+            return;
+        }
+        static void startAccoMNG()
+        { 
+            return;
+        }
+        static void startFligMNG()
+        { 
+            return;
+        }
+
+
+
         static void Main(string[] args)
           {
-
-            string loginUN[50]; // username array
-            string loginPWD[50]; // password array
-
+            
             loginUN[0] =   "loadENG";//Load engineer login
             loginPWD[0] =  "1234"; 
 
@@ -381,6 +412,9 @@ namespace TestSharp
 
             loginUN[3] =   "fligMNG";//Flight Manager login
             loginPWD[3] =  "2343"; 
+
+            loginUN[4] =   "testCust";//TEST CUSTOMER TO REMOVE LATER
+            loginPWD[4] =  "123";
 
             //UN COMMENT THIS LATER
             //startUserLogin();
