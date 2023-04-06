@@ -12,6 +12,7 @@ namespace TestSharp
           {
                Console.WriteLine("Hello world!");
                Console.WriteLine("Yo asdfasdf");
+            Console.WriteLine("Hi");
           }
      }
 }
