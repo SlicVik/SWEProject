@@ -45,9 +45,9 @@ namespace TestSharp
                 //Do something to go back to Vikram's account sign in screen. This is a part I want to question a bit before I add much more.
             }
         }
-        static void Main(string[] args)
-          {
 
+        static void startUserLogin()
+        { 
             //start of Intro Screen
             Console.WriteLine("Project Air "); 
             Console.WriteLine("1) Login ");
@@ -92,11 +92,29 @@ namespace TestSharp
                 }
 
             }
-            else if(input == 1)
-            { 
+            else if(input == 1) // user login screen
+            {       
+                string usrID, password;
+                Console.WriteLine("Enter the Login:");
+                Console.WriteLine("User ID: ");
+                usrID = Console.ReadLine();
+
+                Console.WriteLine("Password: ");
+                password = Console.ReadLine();
+
+               // if ((usrID != AVALIDUSERNAME) && (password != AVALIDPASSWORD))
+               // {
+               //     Console.WriteLine("Account Made!");
+               // }
             }
 
-            //  Account Creation Screen
+          
+        }
+        static void Main(string[] args)
+          {
+            //UN COMMENT THIS LATER
+            //startUserLogin();
+            
 
           }
      }
