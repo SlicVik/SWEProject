@@ -366,6 +366,22 @@ namespace TestSharp
         }
         static void Main(string[] args)
           {
+
+            string loginUN[50]; // username array
+            string loginPWD[50]; // password array
+
+            loginUN[0] =   "loadENG";//Load engineer login
+            loginPWD[0] =  "1234"; 
+
+            loginUN[1] =   "markMNG";//Marketing manager login
+            loginPWD[1] =  "4567"; 
+
+            loginUN[2] =   "accoMNG";//accountant Managerlogin
+            loginPWD[2] =  "7078"; 
+
+            loginUN[3] =   "fligMNG";//Flight Manager login
+            loginPWD[3] =  "2343"; 
+
             //UN COMMENT THIS LATER
             //startUserLogin();
             
