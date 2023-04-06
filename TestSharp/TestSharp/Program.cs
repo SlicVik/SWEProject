@@ -14,6 +14,9 @@ namespace TestSharp
                Console.WriteLine("Yo asdfasdf");
                Console.WriteLine("Hi");
 
+                
+                Console.WriteLine("This is the test message for garrett");
+
           }
      }
 }
