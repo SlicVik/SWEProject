@@ -8,7 +8,44 @@ namespace TestSharp
 {
      internal class Program
      {
-          static void Main(string[] args)
+        static void startLoadEngineer()
+        {
+            Console.WriteLine("Load Engineer");
+            Console.WriteLine("1) Add Flight Route.");
+            Console.WriteLine("2) Manage Flight Routes");
+            Console.WriteLine("3) Sign out.");
+            int selection = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
+
+
+            if (selection == 1)
+            {
+                //Do stuff for adding a flight route (TBD)
+            }
+            if (selection == 2)
+            {
+                Console.WriteLine("Select a Flight Route");
+                //This can be changed later.
+                Console.WriteLine("0) Return to Previous Screen");
+                //Flight routes would be listed here
+                int chosenFlightRoute = Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
+
+                if (chosenFlightRoute != 0)
+                {
+                    Console.WriteLine("Manage Flight Route");
+                    Console.WriteLine("1) Delete Route");
+                    Console.WriteLine("2) Edit Departure Time of Route");
+                    int editOptionChosen = Convert.ToInt32(Console.ReadLine());
+                    Console.Clear();
+                }
+            }
+            if (selection == 3)
+            {
+                //Do something to go back to Vikram's account sign in screen. This is a part I want to question a bit before I add much more.
+            }
+        }
+        static void Main(string[] args)
           {
 
             //start of Intro Screen
