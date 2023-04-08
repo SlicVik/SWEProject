@@ -384,17 +384,59 @@ namespace TestSharp
         }
 
         static void startMarkMNG()
-        { 
+        {
+            Console.WriteLine("Marketing Manager");
+            Console.WriteLine("1) Assign a plane to a flight.");
+            Console.WriteLine("2) Sign out.");
+            int selection = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
+
+            if (selection == 1)
+            {
+                //Do stuff for assigning a plane to a flight (TBD)
+            }
+            if (selection == 2)
+            {
+                //Do something to go back to Vikram's account sign in screen. This is a part I want to question a bit before I add much more.
+            }
             return;
         }
 
         static void startAccoMNG()
-        { 
+        {
+            Console.WriteLine("Accountant Manager");
+            Console.WriteLine("1) Generate Flight Summary Report.");
+            Console.WriteLine("2) Sign out.");
+            int selection = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
+
+            if (selection == 1)
+            {
+                //Do stuff for printing out a flight summary report (TBD)
+            }
+            if (selection == 2)
+            {
+                //Do something to go back to Vikram's account sign in screen. This is a part I want to question a bit before I add much more.
+            }
             return;
         }
 
         static void startFligMNG()
-        { 
+        {
+            Console.WriteLine("Flight Manager");
+            Console.WriteLine("1) Generate Flight Manifest.");
+            Console.WriteLine("2) Sign out.");
+            int selection = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
+
+            if (selection == 1)
+            {
+                //Do stuff for printing out a flight manifest (TBD)
+            }
+            if (selection == 2)
+            {
+                //Do something to go back to Vikram's account sign in screen. This is a part I want to question a bit before I add much more.
+            }
             return;
         }
 
