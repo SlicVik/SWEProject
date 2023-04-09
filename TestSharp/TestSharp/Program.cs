@@ -7,6 +7,19 @@ using System.Threading.Tasks;
 
 namespace TestSharp
 {
+    class Customer // use this class as a way to more easily keep track of and read multiple customers
+    {
+        int ccnum; // creditcardnum
+        int credits;
+        int points;
+        string name;
+        string password;
+        string bday;
+        string usrID;
+        string address;
+        string phonenum;
+
+    }
      internal class Program
      {
 
@@ -88,7 +101,6 @@ namespace TestSharp
                          string newAddress = Console.ReadLine();
                          // then later we put newName into the correct spot of csv file
                     }
-
 
                }
                // if 6) Sign out
@@ -344,7 +356,7 @@ namespace TestSharp
                }
                if (selection == 3)
                {
-                    //Do something to go back to Vikram's account sign in screen. This is a part I want to question a bit before I add much more.
+                    signOut();
                }
           }
 
@@ -359,13 +371,13 @@ namespace TestSharp
                Console.WriteLine("2) Create Account");
                Console.WriteLine("3) Log Off");
                Console.WriteLine("Enter a number to select option: ");
-               int input = Convert.ToInt32(Console.ReadLine());
+               int selection = Convert.ToInt32(Console.ReadLine());
                Console.Clear();
 
                // End of Intro Screen
 
                // Account Creation Screen
-               if (input == 2)
+               if (selection == 2)
                {
                     string usrID, password, creditcardnum, name, bday, phone, address;
 
@@ -398,7 +410,7 @@ namespace TestSharp
                     }
 
                }
-               else if (input == 1) // user login screen
+               else if (selection == 1) // user login screen
                {
                     string usrID, password;
                     Console.WriteLine("Enter the Login:");
@@ -429,9 +441,10 @@ namespace TestSharp
                          startCustomer();
                     }
                }
-               else if (input == 3)
+               else if (selection == 3)
                {
                     Console.WriteLine("Logging off");
+                    // end the program
                }
 
           }
@@ -450,7 +463,7 @@ namespace TestSharp
                }
                if (selection == 2)
                {
-                    //Do something to go back to Vikram's account sign in screen. This is a part I want to question a bit before I add much more.
+                    signOut();
                }
                return;
           }
@@ -469,9 +482,8 @@ namespace TestSharp
                }
                if (selection == 2)
                {
-                    //Do something to go back to Vikram's account sign in screen. This is a part I want to question a bit before I add much more.
+                    signOut();
                }
-               return;
           }
 
           static void startFligMNG()
@@ -488,9 +500,8 @@ namespace TestSharp
                }
                if (selection == 2)
                {
-                    //Do something to go back to Vikram's account sign in screen. This is a part I want to question a bit before I add much more.
+                    signOut();
                }
-               return;
           }
 
           static void signOut()
