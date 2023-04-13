@@ -4,22 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace TestSharp
 {
-    class Customer // use this class as a way to more easily keep track of and read multiple customers
-    {
-        int ccnum; // creditcardnum
-        int credits;
-        int points;
-        string name;
-        string password;
-        string bday;
-        string usrID;
-        string address;
-        string phonenum;
+     class Customer // use this class as a way to more easily keep track of and read multiple customers
+     {
+          int ccnum; // creditcardnum
+          int credits;
+          int points;
+          string name;
+          string password;
+          string bday;
+          string usrID;
+          string address;
+          string phonenum;
 
-    }
+     }
      internal class Program
      {
 
@@ -419,7 +420,9 @@ namespace TestSharp
 
                     Console.WriteLine("Password: ");
                     password = Console.ReadLine();
+                    validateSignIn(usrID, password);        // call validate sign in here
 
+                    /* Commented out Vikram's hard coded sign in
                     if ((usrID == loginUN[0]) && (password == loginPWD[0]))
                     {
                          startLoadEngineer();
@@ -440,6 +443,7 @@ namespace TestSharp
                     {
                          startCustomer();
                     }
+                    */
                }
                else if (selection == 3)
                {
@@ -510,6 +514,71 @@ namespace TestSharp
                Thread.Sleep(3000);
                Console.Clear();
                startUserLogin();
+          }
+
+          // new method to check the csv file with login data to sign the user in to the account
+          static void validateSignIn(String entUserID, String entPass)
+          {
+               string csvUserID;
+               string csvPassword;
+               // change filepath to match where your Accounts.csv file resides
+               String filePath = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Accounts.csv";
+
+               using (StreamReader reader = new StreamReader(filePath))
+               {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                         //Console.WriteLine(line);
+                         string[] row = line.Split(',');
+                         csvUserID = row[6];
+                         csvPassword = row[7];
+                         string csvAccType = row[8];
+
+                         if (entUserID == csvUserID)
+                         {
+                              if (entPass == csvPassword)
+                              {
+                                   if (csvAccType == "LE")
+                                   {
+                                        startLoadEngineer();
+                                        return;
+                                   }
+                                   else if (csvAccType == "MM")
+                                   {
+                                        startMarkMNG();
+                                        return;
+                                   }
+                                   else if (csvAccType == "AM")
+                                   {
+                                        startAccoMNG();
+                                        return;
+                                   }
+                                   else if (csvAccType == "FM")
+                                   {
+                                        startFligMNG();
+                                        return;
+                                   }
+                                   else
+                                   {
+                                        startCustomer();
+                                        return;
+                                   }
+                              }
+                              else if (entPass == csvPassword)
+                              {
+                                   Console.WriteLine("Incorrect password. Try again or create an account.");
+                                   startUserLogin();
+                                   return;
+
+                              }
+                         }
+                    }
+                    Console.WriteLine("UserID does not exist. Create an account or try again.");
+                    startUserLogin();
+                    return;
+               }
+
           }
 
           static void Main(string[] args)
