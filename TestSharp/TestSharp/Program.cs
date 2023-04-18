@@ -565,7 +565,7 @@ namespace TestSharp
                                         return;
                                    }
                               }
-                              else if (entPass == csvPassword)
+                              else if (entPass != csvPassword)
                               {
                                    Console.WriteLine("Incorrect password. Try again or create an account.");
                                    startUserLogin();
