@@ -27,7 +27,12 @@ namespace TestSharp
           public static string[] loginUN = new string[50]; // username array
           public static string[] loginPWD = new string[50]; // password array
 
-          // CUSTOMER METHODS BEGIN HERE
+        // CUSTOMER METHODS BEGIN HERE
+
+            static void changePass()
+            { 
+        
+            }
 
           static void startCustomer()
           {
@@ -87,10 +92,10 @@ namespace TestSharp
                // GET RID OF THIS ENTIRE CASE
                else if (inputNum == 5)
                {
-                    Console.WriteLine("Change Account Details");
-                    Console.WriteLine("1) Address");
-                    Console.WriteLine("2) Phone number");
-                    Console.WriteLine("3) Credit card number");
+                    Console.WriteLine("Change Password");
+
+                    changePass();
+
                     Console.WriteLine("Enter a number to select a field to edit:");
                     int accInput = Convert.ToInt32(Console.ReadLine());
                     Console.Clear();
@@ -583,21 +588,6 @@ namespace TestSharp
 
           static void Main(string[] args)
           {
-
-               loginUN[0] = "loadENG";//Load engineer login
-               loginPWD[0] = "1234";
-
-               loginUN[1] = "markMNG";//Marketing manager login
-               loginPWD[1] = "4567";
-
-               loginUN[2] = "accoMNG";//accountant Managerlogin
-               loginPWD[2] = "7078";
-
-               loginUN[3] = "fligMNG";//Flight Manager login
-               loginPWD[3] = "2343";
-
-               loginUN[4] = "testCust";//TEST CUSTOMER TO REMOVE LATER
-               loginPWD[4] = "123";
 
                //UN COMMENT THIS LATER
                startUserLogin();
