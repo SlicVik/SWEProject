@@ -90,15 +90,47 @@ namespace TestSharp
                 {
                     // allow the user to change the password now
                     // need the code for being able to write to the file
-                    TextWriter sw = new StreamWriter(@"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv");
+                    string path = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";
 
-                    using (sw)
+                    List<String> lines = new List<String>();
+                    StreamReader reader1 = new StreamReader(path);
+
+                    if (File.Exists(path)) 
                     {
-                        string data = "TESTING";
-                        //sw.WriteLine("{9},{7}", data);
+                        using (reader1)
+                        {
+                            String line;
+
+                            while ((line = reader1.ReadLine()) != null)
+                            {
+                                if (line.Contains(","))
+                                {
+                                    String[] split = line.Split(',');
+
+                                    if (split[7].Contains("frommo"))
+                                    {
+                                        split[7] = "vicky";
+                                        line = String.Join(",", split);
+                                    }
+                                }
+
+                                lines.Add(line);
+                            }
+                        }
+
+                        reader1.Close();
+
+                        StreamWriter writer = new StreamWriter(path, false);
+
+                        using (writer)
+                        {
+                            foreach (String line in lines)
+                                writer.WriteLine(line);
+                        }
+                        writer.Close();
                     }
 
-                    sw.Close();
+
                 }
                 else
                 {
