@@ -29,19 +29,19 @@ namespace TestSharp
         // CUSTOMER METHODS BEGIN HERE
         static string StrToSHAD(string input)
         {
-          //string temp = "123456"; // use this var as a tester number
+            //string temp = "123456"; // use this var as a tester number
 
-          var algorithm = HashAlgorithm.Create("sha512");
-          var hash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(input)); 
-          string output = BitConverter.ToString(hash);
-           
-          return output;
+            var algorithm = HashAlgorithm.Create("sha512");
+            var hash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(input));
+            string output = BitConverter.ToString(hash);
+
+            return output;
         }
 
         static string SHADToStr(string input)
-        { 
-          
-                return input;
+        {
+
+            return input;
         }
         static void changePass()
         {
@@ -75,7 +75,7 @@ namespace TestSharp
             }
 
             reader.Close();
-           
+
             if (exists == false)
             {
                 Console.WriteLine("Cannot find a UserID to match the one entered.");
@@ -86,16 +86,20 @@ namespace TestSharp
                 Console.WriteLine("Enter previous password associated with account:");
                 string passInput = Console.ReadLine();
 
-                if (passInput == readUsrPass) // If the passwords and user IDs are lined up
+                if (StrToSHAD(passInput) == readUsrPass) // If the passwords and user IDs are lined up
                 {
                     // allow the user to change the password now
                     // need the code for being able to write to the file
+                    Console.WriteLine("Enter the new password:");
+                    string newpass = Console.ReadLine();
+                    Console.Clear();
+
                     string path = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";
 
                     List<String> lines = new List<String>();
                     StreamReader reader1 = new StreamReader(path);
 
-                    if (File.Exists(path)) 
+                    if (File.Exists(path))
                     {
                         using (reader1)
                         {
@@ -107,9 +111,9 @@ namespace TestSharp
                                 {
                                     String[] split = line.Split(',');
 
-                                    if (split[7].Contains("frommo"))
+                                    if (split[7].Contains(StrToSHAD(passInput)))
                                     {
-                                        split[7] = "vicky";
+                                        split[7] = StrToSHAD(newpass);
                                         line = String.Join(",", split);
                                     }
                                 }
@@ -130,6 +134,8 @@ namespace TestSharp
                         writer.Close();
                     }
 
+                    Console.WriteLine("Password changed successfully!");
+                    Thread.Sleep(3000);
 
                 }
                 else
@@ -137,6 +143,7 @@ namespace TestSharp
                     Console.WriteLine("Passwords do not match what the actual password is for User ID");
                     return;
                 }
+
 
             }
 
@@ -423,6 +430,92 @@ namespace TestSharp
 
         // CUSTOMER METHODS END HERE
 
+
+        static void editRoute()
+        {
+            Console.WriteLine("Available airports: BNA CLE DEN DFW DTW LAS LAX LGA MCO ORD PHX SEA");
+            Console.WriteLine("Enter a source airport for the flight route you want to edit:");
+            string usrsourceAP = Console.ReadLine();
+            Console.Clear();
+
+            String filePath = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv"; // to change to something else later
+            string displayDestAP;
+            int ctr = 0;
+
+            StreamReader reader = new StreamReader(filePath);
+
+            using (reader)
+            {
+                string line;
+                line = reader.ReadLine(); // use this line so that we don't start on the title row
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] row = line.Split(',');
+                    string readsourceAP = row[1];
+
+                    if (readsourceAP == usrsourceAP) // if the user ID exists then exit the loop
+                    {
+                        Console.WriteLine("Route Number: " + row[0] + ". Source Airport " + row[1] + ". Destination " + row[2] + ". Distance " + row[3] + ". Departure Time " + row[4] + ". Source Timezone " + row[5] + ". Arrival Time " + row[6] + ". Destination Timezone " + row[7]);
+                    }
+
+                }
+            }
+            reader.Close();
+
+            Console.WriteLine("Enter the Route number for the route you want to edit: ");
+            string rninput = Console.ReadLine();
+            Console.WriteLine("Source Airport = 1, Destination = 2, Distance = 3, Departure Time = 4, Source Timezone = 5, Arrival Time = 6, Destination Timezone = 7");
+            Console.WriteLine("Enter the part you would like to change: ");
+            int partinput = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter what to change the part to: ");
+            string changeinput = Console.ReadLine();
+            Console.Clear();
+
+            string path = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
+            List<String> lines = new List<String>();
+            StreamReader reader1 = new StreamReader(path);
+
+            if (File.Exists(path))
+            {
+                using (reader1)
+                {
+                    String line;
+
+                    while ((line = reader1.ReadLine()) != null)
+                    {
+                        if (line.Contains(","))
+                        {
+                            String[] split = line.Split(',');
+
+                            if (split[0] == rninput) // if the route is the route that the user wants changed
+                            {
+                                split[partinput] = changeinput;
+                                line = String.Join(",", split);
+                            }
+                        }
+
+                        lines.Add(line);
+                    }
+                }
+
+                reader1.Close();
+
+                StreamWriter writer = new StreamWriter(path, false);
+
+                using (writer)
+                {
+                    foreach (String line in lines)
+                        writer.WriteLine(line);
+                }
+                writer.Close();
+
+                Console.WriteLine("Route successfully changed!");
+                Thread.Sleep(3000);
+
+            }
+        }
+
         static void startLoadEngineer()
         {
             Console.WriteLine("Load Engineer");
@@ -439,21 +532,8 @@ namespace TestSharp
             }
             if (selection == 2)
             {
-                Console.WriteLine("Select a Flight Route");
-                //This can be changed later.
-                Console.WriteLine("0) Return to Previous Screen");
-                //Flight routes would be listed here
-                int chosenFlightRoute = Convert.ToInt32(Console.ReadLine());
-                Console.Clear();
-
-                if (chosenFlightRoute != 0)
-                {
-                    Console.WriteLine("Manage Flight Route");
-                    Console.WriteLine("1) Delete Route");
-                    Console.WriteLine("2) Edit Departure Time of Route");
-                    int editOptionChosen = Convert.ToInt32(Console.ReadLine());
-                    Console.Clear();
-                }
+                editRoute();
+                startLoadEngineer();
             }
             if (selection == 3)
             {
@@ -616,7 +696,7 @@ namespace TestSharp
 
                     if (entUserID == csvUserID)
                     {
-                        if (entPass == csvPassword)
+                        if (StrToSHAD(entPass) == csvPassword)
                         {
                             if (csvAccType == "LE")
                             {
@@ -649,7 +729,7 @@ namespace TestSharp
                                 return;
                             }
                         }
-                        else if (entPass != csvPassword)
+                        else if (StrToSHAD(entPass)!= csvPassword)
                         {
                             reader.Close();
                             Console.WriteLine("Incorrect password. Try again or create an account.");
@@ -673,7 +753,7 @@ namespace TestSharp
             //UN COMMENT THIS LATER
             startUserLogin();
 
-            //StrToSHAD("123456");
+            //StrToSHAD("TESTER");
         }
     }
 }
