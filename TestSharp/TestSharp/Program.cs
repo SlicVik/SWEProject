@@ -21,15 +21,13 @@ namespace TestSharp
         string address;
         string phonenum;
     }
+    
     internal class Program
     {
-        public static string[] loginUN = new string[50]; // username array
-        public static string[] loginPWD = new string[50]; // password array
 
         // CUSTOMER METHODS BEGIN HERE
         static string StrToSHAD(string input)
         {
-            //string temp = "123456"; // use this var as a tester number
 
             var algorithm = HashAlgorithm.Create("sha512");
             var hash = algorithm.ComputeHash(Encoding.UTF8.GetBytes(input));
@@ -38,11 +36,11 @@ namespace TestSharp
             return output;
         }
 
-        static string SHADToStr(string input)
+/*        static string SHADToStr(string input)
         {
 
             return input;
-        }
+        }*/
         static void changePass()
         {
             Console.WriteLine("Enter the userID that you would like to change the password for:");
@@ -430,7 +428,9 @@ namespace TestSharp
 
         // CUSTOMER METHODS END HERE
 
-
+        //-------------------------------------------------READ ME
+        // Functionality done but there are no checks to make sure that the user doesnt enter information that isnt possible
+        // also have to make sure to change the timezone and distance when they change airports
         static void editRoute()
         {
             Console.WriteLine("Available airports: BNA CLE DEN DFW DTW LAS LAX LGA MCO ORD PHX SEA");
@@ -439,8 +439,6 @@ namespace TestSharp
             Console.Clear();
 
             String filePath = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv"; // to change to something else later
-            string displayDestAP;
-            int ctr = 0;
 
             StreamReader reader = new StreamReader(filePath);
 
@@ -465,7 +463,7 @@ namespace TestSharp
 
             Console.WriteLine("Enter the Route number for the route you want to edit: ");
             string rninput = Console.ReadLine();
-            Console.WriteLine("Source Airport = 1, Destination = 2, Distance = 3, Departure Time = 4, Source Timezone = 5, Arrival Time = 6, Destination Timezone = 7");
+            Console.WriteLine("Source Airport = 1, Destination = 2, Distance = 3, Departure Time = 4, Arrival Time = 6");
             Console.WriteLine("Enter the part you would like to change: ");
             int partinput = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Enter what to change the part to: ");
@@ -512,8 +510,101 @@ namespace TestSharp
 
                 Console.WriteLine("Route successfully changed!");
                 Thread.Sleep(3000);
-
+                Console.Clear();
             }
+        }
+
+
+        //functionality works, but there are no checks to see if the times are valid and no checks to see if the airports and aircraft are valid.
+        static void addRoute()
+        {
+            String filePath = @"C:\Users\vadda\OneDrive\Documents\OS and sus\RouteDistWithTZ - Sheet1.csv"; // to change to something else later
+
+            Console.WriteLine("Enter the source airport for the new route: ");
+            string sainput = Console.ReadLine();
+            Console.WriteLine("Enter the destination airport for the new route: ");
+            string dainput = Console.ReadLine();
+            Console.WriteLine("Enter the departure time for the new route: ");
+            string dtinput = Console.ReadLine();
+            Console.WriteLine("Enter the arrival time for the new route: ");
+            string atinput = Console.ReadLine();
+            Console.WriteLine("Enter the aircraft desired for the new route: ");
+            string rtinput = Console.ReadLine();
+
+            string sourcetz = "", desttz = "";
+            string distance = "";
+            int routenum = 0;
+            //assume for now user is entering valid input
+
+            // this reader is going to be used to find the distance, source tz and dest tz from the routesdestwithTZ csv file
+            StreamReader reader = new StreamReader(filePath);
+
+            using (reader)
+            {
+                string line;
+                line = reader.ReadLine(); // use this line so that we don't start on the title row
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] row = line.Split(',');
+                    string readsourceAP = row[0];
+                    string readdestAP = row[1];
+
+                    if ((readsourceAP == sainput) && (readdestAP == dainput)) // the source and destination airport destination are the same as on the csv
+                    {
+                        distance = row[2];
+                        sourcetz = row[3];
+                        desttz = row[4];
+                    }
+
+                }
+            }
+            reader.Close();
+
+            String writefp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
+            //reader1 is used to find the current highest route number so we can make a new route
+            List<String> lines = new List<String>();
+            StreamReader reader1 = new StreamReader(writefp);
+
+            if (File.Exists(writefp))
+            {
+                using (reader1)
+                {
+                    String line;
+                    reader1.ReadLine();
+                    while ((line = reader1.ReadLine()) != null)
+                    {
+                   
+                        String[] split = line.Split(',');
+                        routenum = Convert.ToInt32(split[0]);
+                        lines.Add(line);
+                    }
+                }
+
+                reader1.Close();
+
+                StreamWriter writer = new StreamWriter(writefp, false);
+                //now we have all the data to write the new line
+                routenum++;
+                string writeLine = routenum.ToString() + "," + sainput + "," + dainput + "," + distance + "," + dtinput + "," + sourcetz + "," + atinput + "," + desttz + "," + rtinput;
+
+                using (writer)
+                {
+                    foreach (String line in lines)
+                        writer.WriteLine(line);
+                    writer.WriteLine(writeLine); // writes the last line to the file
+                }
+                writer.Close();
+
+                Console.WriteLine("Route successfully added!");
+                Thread.Sleep(3000);
+                Console.Clear();
+            }
+
+           
+            
+
+            
         }
 
         static void startLoadEngineer()
@@ -528,7 +619,8 @@ namespace TestSharp
 
             if (selection == 1)
             {
-                //Do stuff for adding a flight route (TBD)
+                addRoute();
+                startLoadEngineer();
             }
             if (selection == 2)
             {
@@ -611,6 +703,36 @@ namespace TestSharp
 
         }
 
+        static void assignFlight()
+        {
+           /* Console.WriteLine("Available airports: BNA CLE DEN DFW DTW LAS LAX LGA MCO ORD PHX SEA");
+            Console.WriteLine("Enter a source airport for the flight route you want to change the aircraft for:");
+            string usrsourceAP = Console.ReadLine();
+            Console.Clear();
+
+            String filePath = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv"; // to change to something else later
+
+            StreamReader reader = new StreamReader(filePath);
+
+            using (reader)
+            {
+                string line;
+                line = reader.ReadLine(); // use this line so that we don't start on the title row
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] row = line.Split(',');
+                    string readsourceAP = row[1];
+
+                    if (readsourceAP == usrsourceAP) // if the user ID exists then exit the loop
+                    {
+                        Console.WriteLine("Route Number: " + row[0] + ". Source Airport " + row[1] + ". Destination " + row[2] + ". Distance " + row[3] + ". Departure Time " + row[4] + ". Source Timezone " + row[5] + ". Arrival Time " + row[6] + ". Destination Timezone " + row[7]);
+                    }
+
+                }
+            }
+            reader.Close();*/
+        }
         static void startMarkMNG()
         {
             Console.WriteLine("Marketing Manager");
@@ -621,7 +743,8 @@ namespace TestSharp
 
             if (selection == 1)
             {
-                //Do stuff for assigning a plane to a flight (TBD)
+                assignFlight();
+                startMarkMNG();
             }
             if (selection == 2)
             {
@@ -753,7 +876,6 @@ namespace TestSharp
             //UN COMMENT THIS LATER
             startUserLogin();
 
-            //StrToSHAD("TESTER");
         }
     }
 }
