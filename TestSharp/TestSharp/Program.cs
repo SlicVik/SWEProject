@@ -607,7 +607,33 @@ namespace TestSharp
             
         }
 
-        static void startLoadEngineer()
+          static string getLastFlightNum()
+          {
+               string flightNum = "";
+               // CHANGE FILE PATH TO YOURS
+               String filePath = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Routes.csv";
+               StreamReader flightNumReader = new StreamReader(filePath);
+               using (flightNumReader)
+               {
+                    string line;
+                    while ((line = flightNumReader.ReadLine()) != null)
+                    {
+                         string[] split = line.Split(',');
+                         flightNum = split[0];
+                    }
+               }
+               flightNumReader.Close();
+               return flightNum;
+
+               // Vikram,  you can use this outside of this method if you want
+               //string[] splitFlightNum = flightNum.Split(' ');
+               //int fNumDigits = Convert.ToInt32(splitFlightNum[1]);
+               //fNumDigits++;
+               //string fNumString = Convert.ToString(fNumDigits);
+               //string newFlightNum = "PA " + fNumString;
+          }
+
+          static void startLoadEngineer()
         {
             Console.WriteLine("Load Engineer");
             Console.WriteLine("1) Add Flight Route");

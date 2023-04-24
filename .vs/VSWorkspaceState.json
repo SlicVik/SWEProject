@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\TestSharp",
-    "\\TestSharp\\TestSharp"
+    ""
   ],
-  "SelectedNode": "\\TestSharp\\TestSharp\\Program.cs",
+  "SelectedNode": "\\TestSharp.sln",
   "PreviewInSolutionExplorer": false
 }
