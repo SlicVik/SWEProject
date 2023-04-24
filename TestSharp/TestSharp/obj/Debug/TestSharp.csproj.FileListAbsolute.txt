@@ -39,3 +39,5 @@ C:\Users\vadda\source\repos\SWEPROJF\TestSharp\TestSharp\obj\Debug\TestSharp.csp
 C:\Users\vadda\source\repos\SWEPROJF\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.CopyComplete
 C:\Users\vadda\source\repos\SWEPROJF\TestSharp\TestSharp\obj\Debug\TestSharp.exe
 C:\Users\vadda\source\repos\SWEPROJF\TestSharp\TestSharp\obj\Debug\TestSharp.pdb
+C:\Users\12482\source\repos\SWE\TestSharp\TestSharp\bin\Debug\LINQtoCSV.dll
+C:\Users\12482\source\repos\SWE\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.CopyComplete
