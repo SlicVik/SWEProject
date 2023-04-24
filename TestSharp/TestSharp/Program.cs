@@ -844,8 +844,9 @@ namespace TestSharp
 
                     // now add transaction to transactions.csv
                     string[] lastSplit = allFlightData.Split(',');
+                    string dd = lastSplit[1];          // 
                     string flightNumber = lastSplit[2];
-                    string newTrans = sysDate + "," + fName + "," + lName + "," + ccnum + "," + flightNumber + "," + "$" + cost;
+                    string newTrans = sysDate + "," + fName + "," + lName + "," + ccnum + "," + flightNumber + ","  + deptDate + "," + "$" + cost;
 
                     String fp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Transactions.csv";
                     List<string> transactions = new List<string>();
