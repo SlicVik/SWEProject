@@ -26,6 +26,14 @@ namespace TestSharp
     {
 
         // CUSTOMER METHODS BEGIN HERE
+        public static string routesfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
+        public static string routesTZfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\RouteDistWithTZ - Sheet1.csv";
+        public static string accfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";
+
+        //Vikram's filepaths
+        /*public static string routesfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
+        public static string routesTZfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\RouteDistWithTZ - Sheet1.csv";
+        public static string accfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";*/
         static string StrToSHAD(string input)
         {
 
@@ -47,7 +55,7 @@ namespace TestSharp
             string accInput = Console.ReadLine();
             Console.Clear();
 
-            String filePath = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv"; // to change to something else later
+            String filePath = accfp; // to change to something else later
 
             //to check if there is a username that exists that matches the accInput;
             string readUsrID = "", readUsrPass = "";
@@ -92,7 +100,7 @@ namespace TestSharp
                     string newpass = Console.ReadLine();
                     Console.Clear();
 
-                    string path = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";
+                    string path = accfp;
 
                     List<String> lines = new List<String>();
                     StreamReader reader1 = new StreamReader(path);
@@ -438,7 +446,7 @@ namespace TestSharp
             string usrsourceAP = Console.ReadLine();
             Console.Clear();
 
-            String filePath = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv"; // to change to something else later
+            String filePath = routesfp; // to change to something else later
 
             StreamReader reader = new StreamReader(filePath);
 
@@ -470,7 +478,7 @@ namespace TestSharp
             string changeinput = Console.ReadLine();
             Console.Clear();
 
-            string path = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
+            string path = routesfp;
             List<String> lines = new List<String>();
             StreamReader reader1 = new StreamReader(path);
 
@@ -518,7 +526,7 @@ namespace TestSharp
         //functionality works, but there are no checks to see if the times are valid and no checks to see if the airports and aircraft are valid.
         static void addRoute()
         {
-            String filePath = @"C:\Users\vadda\OneDrive\Documents\OS and sus\RouteDistWithTZ - Sheet1.csv"; // to change to something else later
+            String filePath = routesTZfp; // to change to something else later
 
             Console.WriteLine("Enter the source airport for the new route: ");
             string sainput = Console.ReadLine();
@@ -533,7 +541,6 @@ namespace TestSharp
 
             string sourcetz = "", desttz = "";
             string distance = "";
-            int routenum = 0;
             //assume for now user is entering valid input
 
             // this reader is going to be used to find the distance, source tz and dest tz from the routesdestwithTZ csv file
@@ -561,8 +568,8 @@ namespace TestSharp
             }
             reader.Close();
 
-            String writefp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
-            //reader1 is used to find the current highest route number so we can make a new route
+            String writefp = routesfp;
+            //reader1 is is used to build the file so we can append a new row to it
             List<String> lines = new List<String>();
             StreamReader reader1 = new StreamReader(writefp);
 
@@ -576,18 +583,17 @@ namespace TestSharp
                     {
                    
                         String[] split = line.Split(',');
-                        routenum = Convert.ToInt32(split[0]);
                         lines.Add(line);
                     }
                 }
 
                 reader1.Close();
 
-                StreamWriter writer = new StreamWriter(writefp, false);
+               
                 //now we have all the data to write the new line
-                routenum++;
-                string writeLine = routenum.ToString() + "," + sainput + "," + dainput + "," + distance + "," + dtinput + "," + sourcetz + "," + atinput + "," + desttz + "," + rtinput;
+                string writeLine =  "PA " + (Convert.ToInt32(getLastFlightNum()) + 1).ToString() + "," + sainput + "," + dainput + "," + distance + "," + dtinput + "," + sourcetz + "," + atinput + "," + desttz + "," + rtinput;
 
+                StreamWriter writer = new StreamWriter(writefp, false);
                 using (writer)
                 {
                     foreach (String line in lines)
@@ -600,18 +606,15 @@ namespace TestSharp
                 Thread.Sleep(3000);
                 Console.Clear();
             }
-
-           
-            
-
             
         }
 
+           //Vikram - The way I used this is that input = nothing, output = the last 4 digits of the Routenum in the Routes csv. This would mean that this program would only work with 9999 routes.
           static string getLastFlightNum()
           {
                string flightNum = "";
                // CHANGE FILE PATH TO YOURS
-               String filePath = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Routes.csv";
+               String filePath = routesfp;
                StreamReader flightNumReader = new StreamReader(filePath);
                using (flightNumReader)
                {
@@ -623,18 +626,13 @@ namespace TestSharp
                     }
                }
                flightNumReader.Close();
-               return flightNum;
+               flightNum = flightNum.Substring(3, 4);   
 
-               // Vikram,  you can use this outside of this method if you want
-               //string[] splitFlightNum = flightNum.Split(' ');
-               //int fNumDigits = Convert.ToInt32(splitFlightNum[1]);
-               //fNumDigits++;
-               //string fNumString = Convert.ToString(fNumDigits);
-               //string newFlightNum = "PA " + fNumString;
+               return flightNum;
           }
 
           static void startLoadEngineer()
-        {
+          {
             Console.WriteLine("Load Engineer");
             Console.WriteLine("1) Add Flight Route");
             Console.WriteLine("2) Manage Flight Routes");
@@ -657,7 +655,7 @@ namespace TestSharp
             {
                 signOut();
             }
-        }
+          }
 
         /* In this method, consider clearing console after user enters user ID and password,
          * save the entered user ID in a variable, then print "Welcome <user ID>" in each start... method1
@@ -729,14 +727,15 @@ namespace TestSharp
 
         }
 
+        //functionality has been added, but no checks for to make sure information is valid
         static void assignFlight()
         {
-           /* Console.WriteLine("Available airports: BNA CLE DEN DFW DTW LAS LAX LGA MCO ORD PHX SEA");
+            Console.WriteLine("Available airports: BNA CLE DEN DFW DTW LAS LAX LGA MCO ORD PHX SEA");
             Console.WriteLine("Enter a source airport for the flight route you want to change the aircraft for:");
             string usrsourceAP = Console.ReadLine();
             Console.Clear();
 
-            String filePath = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv"; // to change to something else later
+            String filePath = routesfp; // to change to something else later
 
             StreamReader reader = new StreamReader(filePath);
 
@@ -757,7 +756,59 @@ namespace TestSharp
 
                 }
             }
-            reader.Close();*/
+            reader.Close();
+
+            Console.WriteLine("Enter the Route number for the route you want to edit (include the PA): ");
+            string rninput = Console.ReadLine();
+            Console.WriteLine("Available Aircrafts: 737, 757, 787");
+            Console.WriteLine("Enter what you want to change the aircraft to: ");
+            string acinput = Console.ReadLine();
+            Console.Clear();
+
+            string path = routesfp;
+            List<String> lines = new List<String>();
+            StreamReader reader1 = new StreamReader(path);
+
+            if (File.Exists(path))
+            {
+                using (reader1)
+                {
+                    String line;
+
+                    while ((line = reader1.ReadLine()) != null)
+                    {
+                        if (line.Contains(","))
+                        {
+                            String[] split = line.Split(',');
+
+                            if (split[0] == rninput) // if the route is the route that the user wants changed
+                            {
+                                split[8] = acinput;
+                                line = String.Join(",", split);
+                            }
+                        }
+
+                        lines.Add(line);
+                    }
+                }
+
+                reader1.Close();
+
+                StreamWriter writer = new StreamWriter(path, false);
+
+                using (writer)
+                {
+                    foreach (String line in lines)
+                        writer.WriteLine(line);
+                }
+                writer.Close();
+
+                Console.WriteLine("Aircraft successfully changed!");
+                Thread.Sleep(3000);
+                Console.Clear();
+            }
+
+
         }
         static void startMarkMNG()
         {
@@ -829,7 +880,7 @@ namespace TestSharp
             string csvUserID;
             string csvPassword;
             // change filepath to match where your Accounts.csv file resides
-            String filePath = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";
+            String filePath = accfp;
             StreamReader reader = new StreamReader(filePath);
 
             using (reader)
