@@ -22,7 +22,7 @@ namespace TestSharp
           string address;
           string phonenum;
      }
-    
+
      internal class Program
      {
           // CUSTOMER METHODS BEGIN HERE
@@ -53,6 +53,7 @@ namespace TestSharp
 
           public static string fName;
           public static string lName;
+          public static string userID;
           public static string ccnum;
 
           static string StrToSHAD(string input)
@@ -65,11 +66,11 @@ namespace TestSharp
                return output;
           }
 
-     /*        static string SHADToStr(string input)
-          {
+          /*        static string SHADToStr(string input)
+               {
 
-               return input;
-          }*/
+                    return input;
+               }*/
           static void changePass()
           {
                Console.WriteLine("Enter the userID that you would like to change the password for:");
@@ -115,60 +116,60 @@ namespace TestSharp
 
                     if (StrToSHAD(passInput) == readUsrPass) // If the passwords and user IDs are lined up
                     {
-                    // allow the user to change the password now
-                    // need the code for being able to write to the file
-                    Console.WriteLine("Enter the new password:");
-                    string newpass = Console.ReadLine();
-                    Console.Clear();
+                         // allow the user to change the password now
+                         // need the code for being able to write to the file
+                         Console.WriteLine("Enter the new password:");
+                         string newpass = Console.ReadLine();
+                         Console.Clear();
 
-                    string path = accfp;
+                         string path = accfp;
 
-                    List<String> lines = new List<String>();
-                    StreamReader reader1 = new StreamReader(path);
+                         List<String> lines = new List<String>();
+                         StreamReader reader1 = new StreamReader(path);
 
-                    if (File.Exists(path))
-                    {
-                         using (reader1)
+                         if (File.Exists(path))
                          {
-                              String line;
-
-                              while ((line = reader1.ReadLine()) != null)
+                              using (reader1)
                               {
-                                   if (line.Contains(","))
+                                   String line;
+
+                                   while ((line = reader1.ReadLine()) != null)
                                    {
-                                        String[] split = line.Split(',');
-
-                                        if (split[7].Contains(StrToSHAD(passInput)))
+                                        if (line.Contains(","))
                                         {
-                                        split[7] = StrToSHAD(newpass);
-                                        line = String.Join(",", split);
+                                             String[] split = line.Split(',');
+
+                                             if (split[7].Contains(StrToSHAD(passInput)))
+                                             {
+                                                  split[7] = StrToSHAD(newpass);
+                                                  line = String.Join(",", split);
+                                             }
                                         }
+
+                                        lines.Add(line);
                                    }
-
-                                   lines.Add(line);
                               }
+
+                              reader1.Close();
+
+                              StreamWriter writer = new StreamWriter(path, false);
+
+                              using (writer)
+                              {
+                                   foreach (String line in lines)
+                                        writer.WriteLine(line);
+                              }
+                              writer.Close();
                          }
 
-                         reader1.Close();
-
-                         StreamWriter writer = new StreamWriter(path, false);
-
-                         using (writer)
-                         {
-                              foreach (String line in lines)
-                                   writer.WriteLine(line);
-                         }
-                         writer.Close();
-                    }
-
-                    Console.WriteLine("Password changed successfully!");
-                    Thread.Sleep(3000);
+                         Console.WriteLine("Password changed successfully!");
+                         Thread.Sleep(3000);
 
                     }
                     else
                     {
-                    Console.WriteLine("Passwords do not match what the actual password is for User ID");
-                    return;
+                         Console.WriteLine("Passwords do not match what the actual password is for User ID");
+                         return;
                     }
 
 
@@ -691,7 +692,7 @@ namespace TestSharp
                               }
                               else if (payInput == 2)
                               {
-                                   payWithPoints();
+                                   payWithPoints(candidateFlight, ticketPrice, ticketPricePoints);
                                    return;
                               }
                          }
@@ -777,11 +778,11 @@ namespace TestSharp
                               while ((line = recordReader.ReadLine()) != null)
                               {
                                    string[] splitRecord = line.Split(',');
-                                   if (splitRecord[0] == split[0] && splitRecord[1] == split[1])
+                                   if (splitRecord[0] == split[2] && splitRecord[1] == split[1])
                                    {
                                         recordExists = true;
                                         int seatsLeft = Convert.ToInt32(splitRecord[10]);
-                                        seatsLeft++;
+                                        seatsLeft--;
                                         string seatsLeftString = Convert.ToString(seatsLeft);
                                         splitRecord[10] = seatsLeftString;
                                         line = string.Join(",", splitRecord);
@@ -844,9 +845,8 @@ namespace TestSharp
 
                     // now add transaction to transactions.csv
                     string[] lastSplit = allFlightData.Split(',');
-                    string dd = lastSplit[1];          // 
                     string flightNumber = lastSplit[2];
-                    string newTrans = sysDate + "," + fName + "," + lName + "," + ccnum + "," + flightNumber + ","  + deptDate + "," + "$" + cost;
+                    string newTrans = sysDate + "," + fName + "," + lName + "," + ccnum + "," + flightNumber + "," + deptDate + "," + "$" + cost;
 
                     String fp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Transactions.csv";
                     List<string> transactions = new List<string>();
@@ -876,6 +876,48 @@ namespace TestSharp
                          }
                          transactionWriter.Close();
                     }
+
+                    // now add points to their account for giving us $
+                    double ptBal;
+                    double newPts = cost / 10;
+                    newPts = Math.Round(newPts, 0, MidpointRounding.ToEven);         // rounding
+                    filePath = livsAccountFP;
+                    List<string> accLines = new List<string>();
+                    StreamReader accReader = new StreamReader(filePath);
+
+                    if (File.Exists(filePath))
+                    {
+                         using (accReader)
+                         {
+                              string line;
+                              while ((line = accReader.ReadLine()) != null)
+                              {
+                                   string[] splitRecord = line.Split(',');
+                                   if (splitRecord[6] == userID)
+                                   {
+                                        double.TryParse(splitRecord[9], out ptBal);
+                                        ptBal += newPts;
+                                        string ptBalString = Convert.ToString(ptBal);
+                                        splitRecord[9] = ptBalString;
+                                        line = string.Join(",", splitRecord);
+                                   }
+                                   accLines.Add(line);
+                              }
+                         }
+                         recordReader.Close();
+
+                         StreamWriter recordWriter = new StreamWriter(filePath, false);
+
+                         using (recordWriter)
+                         {
+                              foreach (string line in accLines)
+                              {
+                                   recordWriter.WriteLine(line);
+                              }
+                         }
+                         recordWriter.Close();
+                    }
+
                     // ADD RECEIPT
                     Console.Clear();
                     Console.WriteLine("Flight successfully booked!");
@@ -899,17 +941,257 @@ namespace TestSharp
                }
           }
 
-          static void payWithPoints()
+          static void payWithPoints(string allFlightData, double cost, double points)
           {
-               Console.WriteLine("Here we check if they can pay with points");
-               Console.Clear();
-               Console.WriteLine("Display all flight and payment information one more time");
-               Console.WriteLine("Review booking summary. Enter 'Y' to confirm or 'N' to cancel");
-               Console.WriteLine("('N' will eventually take us back to the previous page)");
-               string conf = Console.ReadLine();
-               Console.Clear();
+               // read Accounts.csv to check if the customer has enough points
+               // if they have nough points, proceed
+               // if they do not have enough points, ask if they want to book with dollars or cancel booking process
+               bool hasEnoughPoints = false;
+               double savedPts = 0;
+               String filePath = livsAccountFP;
+               StreamReader pointReader = new StreamReader(filePath);
+               using (pointReader)
+               {
+                    string line;
+                    while ((line = pointReader.ReadLine()) != null)
+                    {
+                         string[] split = line.Split(',');
+                         if (split[6] == userID)
+                         {
+                              double.TryParse(split[9], out savedPts);
+                              if (savedPts >= points)
+                              {
+                                   hasEnoughPoints = true;
+                              }
+                              break;
+                         }
+                    }
+               }
+               pointReader.Close();
 
-               // HANDLE Y/N CHECKS HERE
+               if (hasEnoughPoints == false)
+               {
+                    Console.WriteLine("Insufficient number of points: ");
+                    Console.WriteLine("You have {0} points available and the flight costs {1} points.", savedPts, points);
+                    Console.WriteLine("Choose an option:");
+                    Console.WriteLine("1) Pay with dollars.");
+                    Console.WriteLine("2) Cancel booking process and return to homepage.");
+                    int selection = Convert.ToInt32(Console.ReadLine());
+
+                    if (selection == 1)
+                    {
+                         payWithDollars(allFlightData, cost);
+                         return;
+                    }
+                    else if (selection == 2)
+                    {
+                         Console.Clear();
+                         startCustomer();
+                         return;
+                    }
+                    else
+                    {
+                         // handle exception here, probably separate into another method
+                         return;
+                    }
+               }
+
+               if (hasEnoughPoints == true)
+               {
+                    string[] split = allFlightData.Split(',');
+                    bool recordExists = false;
+                    Console.WriteLine("Booking Details:");
+                    Console.WriteLine("{0}: {1}        {2} to {3}      {4} to {5}", split[1], split[2], split[3], split[4], split[6], split[8]);
+                    Console.WriteLine("Amount due: {0} points", points);
+                    Console.WriteLine("Review booking summary. Enter 'Y' to reserve flight or 'N' to cancel. 'N' will take you back to the homepage.");
+                    string confirm = Console.ReadLine();
+
+                    if (confirm == "Y")
+                    {
+                         // let's update all relevant CSV files...
+                         // starting with BookedFlightRecords
+                         filePath = livsBookRecFP;
+                         List<string> lines = new List<string>();
+                         StreamReader recordReader = new StreamReader(filePath);
+                         string newLine;
+
+                         if (File.Exists(filePath))
+                         {
+                              using (recordReader)
+                              {
+                                   string line;
+                                   while ((line = recordReader.ReadLine()) != null)
+                                   {
+                                        string[] splitRecord = line.Split(',');
+                                        if (splitRecord[0] == split[0] && splitRecord[1] == split[1])
+                                        {
+                                             recordExists = true;
+                                             int seatsLeft = Convert.ToInt32(splitRecord[10]);
+                                             seatsLeft++;
+                                             string seatsLeftString = Convert.ToString(seatsLeft);
+                                             splitRecord[10] = seatsLeftString;
+                                             line = string.Join(",", splitRecord);
+                                        }
+                                        lines.Add(line);
+                                   }
+                              }
+                              recordReader.Close();
+
+                              if (recordExists == true)
+                              {
+                                   StreamWriter recordWriter = new StreamWriter(filePath, false);
+
+                                   using (recordWriter)
+                                   {
+                                        foreach (string line in lines)
+                                        {
+                                             recordWriter.WriteLine(line);
+                                        }
+                                   }
+                                   recordWriter.Close();
+                              }
+                              else if (recordExists == false)
+                              {
+                                   string[] splitAllFlightData = allFlightData.Split(',');
+                                   string aircraft = splitAllFlightData[10];
+                                   string numSeatsLeft = "";
+
+                                   if (aircraft == "737")
+                                   {
+                                        int seats = 188;
+                                        numSeatsLeft = Convert.ToString(seats);
+                                   }
+                                   else if (aircraft == "757")
+                                   {
+                                        int seats = 199;
+                                        numSeatsLeft = Convert.ToString(seats);
+                                   }
+                                   else if (aircraft == "787")
+                                   {
+                                        int seats = 241;
+                                        numSeatsLeft = Convert.ToString(seats);
+                                   }
+                                   newLine = splitAllFlightData[2] + "," + splitAllFlightData[1] + "," + splitAllFlightData[3] + "," + splitAllFlightData[4]
+                                        + "," + splitAllFlightData[5] + "," + splitAllFlightData[6] + "," + splitAllFlightData[7] + "," + splitAllFlightData[8]
+                                        + "," + splitAllFlightData[9] + "," + splitAllFlightData[10] + "," + numSeatsLeft;
+
+                                   StreamWriter recordWriter = new StreamWriter(filePath, false);
+                                   using (recordWriter)
+                                   {
+                                        foreach (string line in lines)
+                                        {
+                                             recordWriter.WriteLine(line);
+                                        }
+                                        recordWriter.WriteLine(newLine);
+                                   }
+                                   recordWriter.Close();
+                              }
+                         }
+
+                         // now add transaction to transactions.csv
+                         string[] lastSplit = allFlightData.Split(',');
+                         string flightNumber = lastSplit[2];
+                         string newTrans = sysDate + "," + fName + "," + lName + "," + ccnum + "," + flightNumber + "," + deptDate + "," + points + "points";
+
+                         String fp = livsTransFP;
+                         List<string> transactions = new List<string>();
+                         StreamReader transactionReader = new StreamReader(fp);
+
+                         if (File.Exists(fp))
+                         {
+                              using (transactionReader)
+                              {
+                                   string line;
+                                   //recordReader.ReadLine();
+                                   while ((line = transactionReader.ReadLine()) != null)
+                                   {
+                                        transactions.Add(line);
+                                   }
+                              }
+                              transactionReader.Close();
+
+                              StreamWriter transactionWriter = new StreamWriter(fp, false);
+                              using (transactionWriter)
+                              {
+                                   foreach (string line in transactions)
+                                   {
+                                        transactionWriter.WriteLine(line);
+                                   }
+                                   transactionWriter.WriteLine(newTrans);
+                              }
+                              transactionWriter.Close();
+                         }
+
+                         // now remove the points they spent from PointsSaved, then add them to PointsSpent
+                         double PointsSaved;
+                         double PointsSpent;
+                         filePath = livsAccountFP;
+                         List<string> accLines = new List<string>();
+                         StreamReader accReader = new StreamReader(filePath);
+
+                         if (File.Exists(filePath))
+                         {
+                              using (accReader)
+                              {
+                                   string line;
+                                   while ((line = accReader.ReadLine()) != null)
+                                   {
+                                        string[] splitRecord = line.Split(',');
+                                        if (splitRecord[6] == userID)
+                                        {
+                                             // subtract from points saved and reassign in the index
+                                             double.TryParse(splitRecord[9], out PointsSaved);
+                                             PointsSaved -= points;
+                                             string PointsSavedString = Convert.ToString(PointsSaved);
+                                             splitRecord[9] = PointsSavedString;
+
+                                             // add to points spent and reassign in index
+                                             double.TryParse(splitRecord[10], out PointsSpent);
+                                             PointsSpent += points;
+                                             string PointsSpentString = Convert.ToString(PointsSpent);
+                                             splitRecord[10] = PointsSpentString;
+
+                                             line = string.Join(",", splitRecord);
+                                        }
+                                        accLines.Add(line);
+                                   }
+                              }
+                              recordReader.Close();
+
+                              StreamWriter recordWriter = new StreamWriter(filePath, false);
+
+                              using (recordWriter)
+                              {
+                                   foreach (string line in accLines)
+                                   {
+                                        recordWriter.WriteLine(line);
+                                   }
+                              }
+                              recordWriter.Close();
+                         }
+
+
+                         // ADD RECEIPT
+                         Console.Clear();
+                         Console.WriteLine("Flight successfully booked!");
+                         Thread.Sleep(3000);
+                         Console.Clear();
+                         startCustomer();
+                         return;
+                    }
+                    else if (confirm == "N")
+                    {
+                         Console.Clear();
+                         startCustomer();
+                         return;
+                    }
+                    else
+                    {
+                         // split this up later to handle this check
+                         Console.WriteLine("Enter a valid command.");
+                         return;
+                    }
+               }
           }
 
           // CUSTOMER METHODS END HERE
@@ -935,13 +1217,13 @@ namespace TestSharp
 
                     while ((line = reader.ReadLine()) != null)
                     {
-                    string[] row = line.Split(',');
-                    string readsourceAP = row[1];
+                         string[] row = line.Split(',');
+                         string readsourceAP = row[1];
 
-                    if (readsourceAP == usrsourceAP) // if the user ID exists then exit the loop
-                    {
-                         Console.WriteLine("Route Number: " + row[0] + ". Source Airport " + row[1] + ". Destination " + row[2] + ". Distance " + row[3] + ". Departure Time " + row[4] + ". Source Timezone " + row[5] + ". Arrival Time " + row[6] + ". Destination Timezone " + row[7]);
-                    }
+                         if (readsourceAP == usrsourceAP) // if the user ID exists then exit the loop
+                         {
+                              Console.WriteLine("Route Number: " + row[0] + ". Source Airport " + row[1] + ". Destination " + row[2] + ". Distance " + row[3] + ". Departure Time " + row[4] + ". Source Timezone " + row[5] + ". Arrival Time " + row[6] + ". Destination Timezone " + row[7]);
+                         }
 
                     }
                }
@@ -964,23 +1246,23 @@ namespace TestSharp
                {
                     using (reader1)
                     {
-                    String line;
+                         String line;
 
-                    while ((line = reader1.ReadLine()) != null)
-                    {
-                         if (line.Contains(","))
+                         while ((line = reader1.ReadLine()) != null)
                          {
-                              String[] split = line.Split(',');
-
-                              if (split[0] == rninput) // if the route is the route that the user wants changed
+                              if (line.Contains(","))
                               {
-                                   split[partinput] = changeinput;
-                                   line = String.Join(",", split);
-                              }
-                         }
+                                   String[] split = line.Split(',');
 
-                         lines.Add(line);
-                    }
+                                   if (split[0] == rninput) // if the route is the route that the user wants changed
+                                   {
+                                        split[partinput] = changeinput;
+                                        line = String.Join(",", split);
+                                   }
+                              }
+
+                              lines.Add(line);
+                         }
                     }
 
                     reader1.Close();
@@ -989,8 +1271,8 @@ namespace TestSharp
 
                     using (writer)
                     {
-                    foreach (String line in lines)
-                         writer.WriteLine(line);
+                         foreach (String line in lines)
+                              writer.WriteLine(line);
                     }
                     writer.Close();
 
@@ -1031,16 +1313,16 @@ namespace TestSharp
 
                     while ((line = reader.ReadLine()) != null)
                     {
-                    string[] row = line.Split(',');
-                    string readsourceAP = row[0];
-                    string readdestAP = row[1];
+                         string[] row = line.Split(',');
+                         string readsourceAP = row[0];
+                         string readdestAP = row[1];
 
-                    if ((readsourceAP == sainput) && (readdestAP == dainput)) // the source and destination airport destination are the same as on the csv
-                    {
-                         distance = row[2];
-                         sourcetz = row[3];
-                         desttz = row[4];
-                    }
+                         if ((readsourceAP == sainput) && (readdestAP == dainput)) // the source and destination airport destination are the same as on the csv
+                         {
+                              distance = row[2];
+                              sourcetz = row[3];
+                              desttz = row[4];
+                         }
 
                     }
                }
@@ -1055,28 +1337,28 @@ namespace TestSharp
                {
                     using (reader1)
                     {
-                    String line;
-                    reader1.ReadLine();
-                    while ((line = reader1.ReadLine()) != null)
-                    {
-                   
-                         String[] split = line.Split(',');
-                         lines.Add(line);
-                    }
+                         String line;
+                         reader1.ReadLine();
+                         while ((line = reader1.ReadLine()) != null)
+                         {
+
+                              String[] split = line.Split(',');
+                              lines.Add(line);
+                         }
                     }
 
                     reader1.Close();
 
-               
+
                     //now we have all the data to write the new line
-                    string writeLine =  "PA " + (Convert.ToInt32(getLastFlightNum()) + 1).ToString() + "," + sainput + "," + dainput + "," + distance + "," + dtinput + "," + sourcetz + "," + atinput + "," + desttz + "," + rtinput;
+                    string writeLine = "PA " + (Convert.ToInt32(getLastFlightNum()) + 1).ToString() + "," + sainput + "," + dainput + "," + distance + "," + dtinput + "," + sourcetz + "," + atinput + "," + desttz + "," + rtinput;
 
                     StreamWriter writer = new StreamWriter(writefp, false);
                     using (writer)
                     {
-                    foreach (String line in lines)
-                         writer.WriteLine(line);
-                    writer.WriteLine(writeLine); // writes the last line to the file
+                         foreach (String line in lines)
+                              writer.WriteLine(line);
+                         writer.WriteLine(writeLine); // writes the last line to the file
                     }
                     writer.Close();
 
@@ -1084,10 +1366,10 @@ namespace TestSharp
                     Thread.Sleep(3000);
                     Console.Clear();
                }
-            
+
           }
 
-               //Vikram - The way I used this is that input = nothing, output = the last 4 digits of the Routenum in the Routes csv. This would mean that this program would only work with 9999 routes.
+          //Vikram - The way I used this is that input = nothing, output = the last 4 digits of the Routenum in the Routes csv. This would mean that this program would only work with 9999 routes.
           static string getLastFlightNum()
           {
                string flightNum = "";
@@ -1104,7 +1386,7 @@ namespace TestSharp
                     }
                }
                flightNumReader.Close();
-               flightNum = flightNum.Substring(3, 4);   
+               flightNum = flightNum.Substring(3, 4);
 
                return flightNum;
           }
@@ -1181,7 +1463,7 @@ namespace TestSharp
 
                     if ((usrID != "") && (password != "") && (creditcardnum != ""))
                     {
-                    Console.WriteLine("Account Made!");
+                         Console.WriteLine("Account Made!");
                     }
 
                }
@@ -1224,13 +1506,13 @@ namespace TestSharp
 
                     while ((line = reader.ReadLine()) != null)
                     {
-                    string[] row = line.Split(',');
-                    string readsourceAP = row[1];
+                         string[] row = line.Split(',');
+                         string readsourceAP = row[1];
 
-                    if (readsourceAP == usrsourceAP) // if the user ID exists then exit the loop
-                    {
-                         Console.WriteLine("Route Number: " + row[0] + ". Source Airport " + row[1] + ". Destination " + row[2] + ". Distance " + row[3] + ". Departure Time " + row[4] + ". Source Timezone " + row[5] + ". Arrival Time " + row[6] + ". Destination Timezone " + row[7]);
-                    }
+                         if (readsourceAP == usrsourceAP) // if the user ID exists then exit the loop
+                         {
+                              Console.WriteLine("Route Number: " + row[0] + ". Source Airport " + row[1] + ". Destination " + row[2] + ". Distance " + row[3] + ". Departure Time " + row[4] + ". Source Timezone " + row[5] + ". Arrival Time " + row[6] + ". Destination Timezone " + row[7]);
+                         }
 
                     }
                }
@@ -1251,23 +1533,23 @@ namespace TestSharp
                {
                     using (reader1)
                     {
-                    String line;
+                         String line;
 
-                    while ((line = reader1.ReadLine()) != null)
-                    {
-                         if (line.Contains(","))
+                         while ((line = reader1.ReadLine()) != null)
                          {
-                              String[] split = line.Split(',');
-
-                              if (split[0] == rninput) // if the route is the route that the user wants changed
+                              if (line.Contains(","))
                               {
-                                   split[8] = acinput;
-                                   line = String.Join(",", split);
-                              }
-                         }
+                                   String[] split = line.Split(',');
 
-                         lines.Add(line);
-                    }
+                                   if (split[0] == rninput) // if the route is the route that the user wants changed
+                                   {
+                                        split[8] = acinput;
+                                        line = String.Join(",", split);
+                                   }
+                              }
+
+                              lines.Add(line);
+                         }
                     }
 
                     reader1.Close();
@@ -1276,8 +1558,8 @@ namespace TestSharp
 
                     using (writer)
                     {
-                    foreach (String line in lines)
-                         writer.WriteLine(line);
+                         foreach (String line in lines)
+                              writer.WriteLine(line);
                     }
                     writer.Close();
 
@@ -1366,60 +1648,61 @@ namespace TestSharp
                     string line;
                     while ((line = reader.ReadLine()) != null)
                     {
-                    //Console.WriteLine(line);
-                    string[] row = line.Split(',');
-                    csvUserID = row[6];
-                    csvPassword = row[7];
-                    string csvAccType = row[8];
+                         //Console.WriteLine(line);
+                         string[] row = line.Split(',');
+                         csvUserID = row[6];
+                         csvPassword = row[7];
+                         string csvAccType = row[8];
 
-                    if (entUserID == csvUserID)
-                    {
-                         if (StrToSHAD(entPass) == csvPassword)
+                         if (entUserID == csvUserID)
                          {
-                              if (csvAccType == "LE")
+                              if (StrToSHAD(entPass) == csvPassword)
                               {
-                                   reader.Close();
-                                   startLoadEngineer();
-                                   return;
+                                   if (csvAccType == "LE")
+                                   {
+                                        reader.Close();
+                                        startLoadEngineer();
+                                        return;
+                                   }
+                                   else if (csvAccType == "MM")
+                                   {
+                                        reader.Close();
+                                        startMarkMNG();
+                                        return;
+                                   }
+                                   else if (csvAccType == "AM")
+                                   {
+                                        reader.Close();
+                                        startAccoMNG();
+                                        return;
+                                   }
+                                   else if (csvAccType == "FM")
+                                   {
+                                        reader.Close();
+                                        startFligMNG();
+                                        return;
+                                   }
+                                   else
+                                   {
+                                        reader.Close();
+                                        // olivia added for cust methods
+                                        fName = row[0];
+                                        lName = row[1];
+                                        ccnum = row[5];
+                                        userID = row[6];
+                                        startCustomer();
+                                        return;
+                                   }
                               }
-                              else if (csvAccType == "MM")
+                              else if (StrToSHAD(entPass) != csvPassword)
                               {
                                    reader.Close();
-                                   startMarkMNG();
+                                   Console.WriteLine("Incorrect password. Try again or create an account.");
+                                   startUserLogin();
                                    return;
-                              }
-                              else if (csvAccType == "AM")
-                              {
-                                   reader.Close();
-                                   startAccoMNG();
-                                   return;
-                              }
-                              else if (csvAccType == "FM")
-                              {
-                                   reader.Close();
-                                   startFligMNG();
-                                   return;
-                              }
-                              else
-                              {
-                                   reader.Close();
-                                   // olivia added for cust methods
-                                   fName = row[0];
-                                   lName = row[1];
-                                   ccnum = row[5];
-                                   startCustomer();
-                                   return;
+
                               }
                          }
-                         else if (StrToSHAD(entPass)!= csvPassword)
-                         {
-                              reader.Close();
-                              Console.WriteLine("Incorrect password. Try again or create an account.");
-                              startUserLogin();
-                              return;
-
-                         }
-                    }
                     }
                     reader.Close();
                     Console.WriteLine("UserID does not exist. Create an account or try again.");
