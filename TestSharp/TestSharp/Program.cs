@@ -25,21 +25,23 @@ namespace TestSharp
 
      internal class Program
      {
-          // CUSTOMER METHODS BEGIN HERE
-          public static string routesfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
-          public static string routesTZfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\RouteDistWithTZ - Sheet1.csv";
-          public static string accfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";
+        //Vikram's filepaths
+        /*public static string routesfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
+        public static string routesTZfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\RouteDistWithTZ - Sheet1.csv";
+        public static string accfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";*/
 
-          //Vikram's filepaths
-          /*public static string routesfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
-          public static string routesTZfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\RouteDistWithTZ - Sheet1.csv";
-          public static string accfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";*/
+        //Garrett's filepaths
+        public static string routesfp = @"C:\Users\knowl\Downloads\Routes - Sheet1.csv";
+        public static string routesTZfp = @"C:\Users\knowl\Downloads\RoutesDistWithTZ - Sheet1.csv";
+        public static string accfp = @"C:\Users\knowl\Downloads\Accounts - Accounts.csv";
+        public static string transactionsfp = @"C:\Users\knowl\Downloads\Transactions.csv";
+        public static string bookedFlightsfp = @"C:\Users\knowl\Downloads\BookedFlightRecords.csv";
 
-          //Olivia's filepaths
-          public static string livsAccountFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Accounts.csv";
-          public static string livsTransFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Transactions.csv";
-          public static string livsRoutesFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Routes.csv";
-          public static string livsBookRecFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";
+        //Olivia's filepaths
+        //public static string livsAccountFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Accounts.csv";
+        //  public static string livsTransFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Transactions.csv";
+        //  public static string livsRoutesFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Routes.csv";
+        //  public static string livsBookRecFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";
 
 
           // Olivia added these because they were needed across multiple methods where it didn't make sense to pass parameters
@@ -557,8 +559,8 @@ namespace TestSharp
                int userSelFlight;
                //string departDate; TO UPDATE FLIGHT RECORD LATER
                // change filepath to match where your Accounts.csv file resides
-               String filePath = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Routes.csv";
-               StreamReader routeReader = new StreamReader(filePath);
+               //String filePath = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Routes.csv";
+               StreamReader routeReader = new StreamReader(routesfp);
                List<string> directRoutes = new List<string>();        // store all valid direct src/dest combos in this array before more checks
                List<string> displayTracker = new List<string>();      // used to keep track of which flight the customer selects to book, so the CSVs can be updated
                //string candidateFlight;       // keeps the departure date and flight number
@@ -704,8 +706,8 @@ namespace TestSharp
           static bool flightHasRecord(string flightNum, string date)
           {
                bool hasRecord = false;
-               String filePath = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";
-               StreamReader flightReader = new StreamReader(filePath);
+               //String filePath = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";
+               StreamReader flightReader = new StreamReader(bookedFlightsfp);
                using (flightReader)
                {
                     string line;
@@ -727,8 +729,8 @@ namespace TestSharp
           {
                bool seatsLeft = false;
                bool flightFound = false;          // used for loop
-               String filePath = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";
-               StreamReader seatReader = new StreamReader(filePath);
+               //String filePath = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";
+               StreamReader seatReader = new StreamReader(bookedFlightsfp);
                using (seatReader)
                {
                     string line;
@@ -764,12 +766,12 @@ namespace TestSharp
                {
                     // let's update all relevant CSV files...
                     // starting with BookedFlightRecords
-                    String filePath = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";
+                    //String filePath = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";
                     List<string> lines = new List<string>();
-                    StreamReader recordReader = new StreamReader(filePath);
+                    StreamReader recordReader = new StreamReader(bookedFlightsfp);
                     string newLine;
 
-                    if (File.Exists(filePath))
+                    if (File.Exists(bookedFlightsfp))
                     {
                          using (recordReader)
                          {
@@ -794,7 +796,7 @@ namespace TestSharp
 
                          if (recordExists == true)
                          {
-                              StreamWriter recordWriter = new StreamWriter(filePath, false);
+                              StreamWriter recordWriter = new StreamWriter(bookedFlightsfp, false);
 
                               using (recordWriter)
                               {
@@ -830,7 +832,7 @@ namespace TestSharp
                                    + "," + splitAllFlightData[5] + "," + splitAllFlightData[6] + "," + splitAllFlightData[7] + "," + splitAllFlightData[8]
                                    + "," + splitAllFlightData[9] + "," + splitAllFlightData[10] + "," + numSeatsLeft;
 
-                              StreamWriter recordWriter = new StreamWriter(filePath, false);
+                              StreamWriter recordWriter = new StreamWriter(bookedFlightsfp, false);
                               using (recordWriter)
                               {
                                    foreach (string line in lines)
@@ -881,11 +883,11 @@ namespace TestSharp
                     double ptBal;
                     double newPts = cost / 10;
                     newPts = Math.Round(newPts, 0, MidpointRounding.ToEven);         // rounding
-                    filePath = livsAccountFP;
+                    //filePath = accfp;
                     List<string> accLines = new List<string>();
-                    StreamReader accReader = new StreamReader(filePath);
+                    StreamReader accReader = new StreamReader(accfp);
 
-                    if (File.Exists(filePath))
+                    if (File.Exists(accfp))
                     {
                          using (accReader)
                          {
@@ -906,7 +908,7 @@ namespace TestSharp
                          }
                          recordReader.Close();
 
-                         StreamWriter recordWriter = new StreamWriter(filePath, false);
+                         StreamWriter recordWriter = new StreamWriter(accfp, false);
 
                          using (recordWriter)
                          {
@@ -948,7 +950,7 @@ namespace TestSharp
                // if they do not have enough points, ask if they want to book with dollars or cancel booking process
                bool hasEnoughPoints = false;
                double savedPts = 0;
-               String filePath = livsAccountFP;
+               String filePath = accfp;
                StreamReader pointReader = new StreamReader(filePath);
                using (pointReader)
                {
@@ -1010,7 +1012,7 @@ namespace TestSharp
                     {
                          // let's update all relevant CSV files...
                          // starting with BookedFlightRecords
-                         filePath = livsBookRecFP;
+                         filePath = bookedFlightsfp;
                          List<string> lines = new List<string>();
                          StreamReader recordReader = new StreamReader(filePath);
                          string newLine;
@@ -1093,7 +1095,7 @@ namespace TestSharp
                          string flightNumber = lastSplit[2];
                          string newTrans = sysDate + "," + fName + "," + lName + "," + ccnum + "," + flightNumber + "," + deptDate + "," + points + "points";
 
-                         String fp = livsTransFP;
+                         String fp = transactionsfp;
                          List<string> transactions = new List<string>();
                          StreamReader transactionReader = new StreamReader(fp);
 
@@ -1125,7 +1127,7 @@ namespace TestSharp
                          // now remove the points they spent from PointsSaved, then add them to PointsSpent
                          double PointsSaved;
                          double PointsSpent;
-                         filePath = livsAccountFP;
+                         filePath = accfp;
                          List<string> accLines = new List<string>();
                          StreamReader accReader = new StreamReader(filePath);
 
@@ -1436,37 +1438,176 @@ namespace TestSharp
                // Account Creation Screen
                if (selection == 2)
                {
-                    string usrID, password, creditcardnum, name, bday, phone, address;
+                    string usrID, password, creditcardnum, firstName, lastName, bday, phone, address;
+                    StreamReader readerForUsrID = new StreamReader(accfp);
+                    StreamReader readerForCCN = new StreamReader(accfp);
+                    bool isValidCC = true;
+                    List<string> lines = new List<string>();
 
-                    Console.WriteLine("Enter into the following fields to make your account (the asterix means that the field is required)");
+                    Console.WriteLine("Enter into the following fields to make your account");
 
-                    Console.WriteLine("User ID*: ");
-                    usrID = Console.ReadLine();
+                    Console.WriteLine("First Name: ");
+                    firstName = Console.ReadLine();
+                    if(firstName == "")
+                    {
+                    Console.Clear();
+                        Console.WriteLine("Must enter a first name. Try again");
+                        startUserLogin();
+                        return;
+                    }
 
-                    Console.WriteLine("Password*: ");
-                    password = Console.ReadLine();
-
-                    Console.WriteLine("Credit Card Number*: ");
-                    creditcardnum = Console.ReadLine();
-
-                    Console.WriteLine("Name: ");
-                    name = Console.ReadLine();
-
-                    Console.WriteLine("Birthday: ");
-                    bday = Console.ReadLine();
-
-                    Console.WriteLine("Phone Number: ");
-                    phone = Console.ReadLine();
+                    Console.WriteLine("Last Name: ");
+                    lastName = Console.ReadLine();
+                    if (lastName == "")
+                    {
+                    Console.Clear();
+                    Console.WriteLine("Must enter a last name. Try again");
+                        startUserLogin();
+                        return;
+                    }
 
                     Console.WriteLine("Address: ");
                     address = Console.ReadLine();
+                if (address == "")
+                {
+                    Console.Clear();
+                    Console.WriteLine("Must enter an address. Try again");
+                    startUserLogin();
+                    return;
+                }
 
-                    if ((usrID != "") && (password != "") && (creditcardnum != ""))
+                Console.WriteLine("Phone Number: ");
+                    phone = Console.ReadLine();
+                if (phone == "")
+                {
+                    Console.Clear();
+                    Console.WriteLine("Must enter a phone number. Try again");
+                    startUserLogin();
+                    return;
+                }
+
+                Console.WriteLine("Birthday: ");
+                    bday = Console.ReadLine();
+
+                    // code to validate date
+                    DateTime newDateVariableName;        // create a new DateTime to save the string to
+                    string format = "M/d/yyyy";
+                    if (DateTime.TryParseExact(bday, format, new CultureInfo("en-US"), DateTimeStyles.None, out newDateVariableName))
                     {
-                         Console.WriteLine("Account Made!");
+                        //Do nothing, continue on with bday as it is.
+                    }
+                    else
+                    {
+                        // clear console
+                        Console.Clear();
+                        // display error message
+                        Console.WriteLine("Invalid Birthday entered, please try again.");
+                        startUserLogin();
+                        return;
                     }
 
-               }
+                    Console.WriteLine("Credit Card Number: ");
+
+                    //Code to validate credit card number
+                    creditcardnum = Console.ReadLine();
+                    if (creditcardnum.Length != 16)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Invalid Credit Card Number, please enter again.");
+                        startUserLogin();
+                        return;
+                    }
+                    else
+                    {
+                        string ccnLine;
+                        string[] ccnSplit;
+                        using (readerForCCN)
+                        {
+                            while ((ccnLine = readerForCCN.ReadLine()) != null)
+                            {
+                                ccnSplit = ccnLine.Split(',');
+                                if (ccnSplit[5].Contains(creditcardnum))
+                                {
+                                    isValidCC = false;
+                                    
+                                }
+                            }
+                        }
+                        readerForCCN.Close();
+                        if(isValidCC == false)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Invalid Credit Card Number, please enter again.");
+                        startUserLogin();
+                        return;
+                    }
+                    }
+
+                    Console.WriteLine("Password: ");
+                    password = Console.ReadLine();
+                    if(password == "")
+                {
+                        Console.Clear();
+                        Console.WriteLine("Must enter a password. Try again");
+                        startUserLogin();
+                        return;
+                }
+
+                    usrID = randomNumberGenerator();
+                                       
+                        using (readerForUsrID)
+                        {
+                            string line;
+                            string[] split;
+
+                            while ((line = readerForUsrID.ReadLine()) != null)
+                            {
+                                split = line.Split(',');
+
+                                //We don't want duplicate user IDs
+                                if (split[6].Contains(usrID))
+                                {
+                                    //Generate a new random number in case we encounter a duplicate (extremely unlikely)
+                                    usrID = randomNumberGenerator();
+                                }
+
+                                lines.Add(line);
+                            }
+                        }
+                        readerForUsrID.Close();
+                        //If something is invalid, and then you try to do it right, we get an IO exception.
+                        StreamWriter writerForUsrID = new StreamWriter(accfp, false);
+                string specialAcct = "";
+                string pointsSaved = "";
+                string pointsSpent = "";
+                string dollarCredit = "";
+                string hashPass = StrToSHAD(password);
+                        string newLine = firstName + "," + lastName + "," + address + "," + phone + "," + bday + "," + creditcardnum + "," + usrID + "," + hashPass
+                            + "," + specialAcct + "," + pointsSaved + "," + pointsSpent + "," + dollarCredit;
+
+                        //For appending we don't need to use foreach if we can just append one line.
+                        using (writerForUsrID)
+                        {
+                            foreach (string line in lines)
+                            {
+                                writerForUsrID.WriteLine(line);
+                            }
+                            writerForUsrID.WriteLine(newLine);
+                        }
+                        writerForUsrID.Close();
+                    
+                //Return to user login screen
+                Console.WriteLine("Account Made! Sign in to use your account.");
+                Console.WriteLine("Please save your User ID and Password in a secure location:");
+                Console.WriteLine("User ID: {0}", usrID);
+                Console.WriteLine("Password: {0}", password);
+                Console.WriteLine("Press any key to return to main menu.");
+                string returnToMain = Console.ReadLine();
+                Console.Clear();
+                startUserLogin();
+                return;
+
+            }
                else if (selection == 1) // user login screen
                {
                     string usrID, password;
@@ -1487,8 +1628,47 @@ namespace TestSharp
 
           }
 
-          //functionality has been added, but no checks for to make sure information is valid
-          static void assignFlight()
+        static string randomNumberGenerator()
+        {
+            Random rng = new Random();
+            int userID1;
+            int userIDRemaining;
+            int fillerZero = 0;
+            string userID;
+            //Generate the first digit of our 6 digit user ID. This can't be 0. 
+            userID1 = rng.Next(1, 10);
+            //Generate the remaining 5 digits of our user ID. These can be anything.
+            userIDRemaining = rng.Next(00000, 100000);
+            //Combine these two values together via concatenation to complete our user ID.
+            if (userIDRemaining < 10000)
+            {
+                userID = userID1.ToString() + fillerZero.ToString() + userIDRemaining.ToString();
+                return userID;
+            }
+            else if (userIDRemaining < 1000)
+            {
+                userID = userID1.ToString() + fillerZero.ToString() + fillerZero.ToString() + userIDRemaining.ToString();
+                return userID;
+            }
+            else if (userIDRemaining < 100)
+            {
+                userID = userID1.ToString() + fillerZero.ToString() + fillerZero.ToString() + fillerZero.ToString() + userIDRemaining.ToString();
+                return userID;
+            }
+            else if (userIDRemaining < 10)
+            {
+                userID = userID1.ToString() + fillerZero.ToString() + fillerZero.ToString() + fillerZero.ToString() + fillerZero.ToString() + userIDRemaining.ToString();
+                return userID;
+            }
+            else
+            {
+                userID = userID1.ToString() + userIDRemaining.ToString();
+                return userID;
+            }
+        }
+
+        //functionality has been added, but no checks for to make sure information is valid
+        static void assignFlight()
           {
                Console.WriteLine("Available airports: BNA CLE DEN DFW DTW LAS LAX LGA MCO ORD PHX SEA");
                Console.WriteLine("Enter a source airport for the flight route you want to change the aircraft for:");
@@ -1640,7 +1820,7 @@ namespace TestSharp
                string csvUserID;
                string csvPassword;
                // change filepath to match where your Accounts.csv file resides
-               String filePath = livsAccountFP;        // change to your own filepath
+               String filePath = accfp;        // change to your own filepath
                StreamReader reader = new StreamReader(filePath);
 
                using (reader)

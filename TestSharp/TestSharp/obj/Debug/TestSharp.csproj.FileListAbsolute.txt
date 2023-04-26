@@ -41,3 +41,13 @@ C:\Users\vadda\source\repos\SWEPROJF\TestSharp\TestSharp\obj\Debug\TestSharp.exe
 C:\Users\vadda\source\repos\SWEPROJF\TestSharp\TestSharp\obj\Debug\TestSharp.pdb
 C:\Users\12482\source\repos\SWE\TestSharp\TestSharp\bin\Debug\LINQtoCSV.dll
 C:\Users\12482\source\repos\SWE\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.CopyComplete
+C:\Users\knowl\source\repos\ProjectAir5\TestSharp\TestSharp\bin\Debug\TestSharp.exe.config
+C:\Users\knowl\source\repos\ProjectAir5\TestSharp\TestSharp\bin\Debug\TestSharp.exe
+C:\Users\knowl\source\repos\ProjectAir5\TestSharp\TestSharp\bin\Debug\TestSharp.pdb
+C:\Users\knowl\source\repos\ProjectAir5\TestSharp\TestSharp\bin\Debug\LINQtoCSV.dll
+C:\Users\knowl\source\repos\ProjectAir5\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.AssemblyReference.cache
+C:\Users\knowl\source\repos\ProjectAir5\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.SuggestedBindingRedirects.cache
+C:\Users\knowl\source\repos\ProjectAir5\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.CoreCompileInputs.cache
+C:\Users\knowl\source\repos\ProjectAir5\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.CopyComplete
+C:\Users\knowl\source\repos\ProjectAir5\TestSharp\TestSharp\obj\Debug\TestSharp.exe
+C:\Users\knowl\source\repos\ProjectAir5\TestSharp\TestSharp\obj\Debug\TestSharp.pdb
