@@ -1578,9 +1578,9 @@ namespace TestSharp
                         //If something is invalid, and then you try to do it right, we get an IO exception.
                         StreamWriter writerForUsrID = new StreamWriter(accfp, false);
                 string specialAcct = "";
-                string pointsSaved = "";
-                string pointsSpent = "";
-                string dollarCredit = "";
+                string pointsSaved = "0";
+                string pointsSpent = "0";
+                string dollarCredit = "0";
                 string hashPass = StrToSHAD(password);
                         string newLine = firstName + "," + lastName + "," + address + "," + phone + "," + bday + "," + creditcardnum + "," + usrID + "," + hashPass
                             + "," + specialAcct + "," + pointsSaved + "," + pointsSpent + "," + dollarCredit;
