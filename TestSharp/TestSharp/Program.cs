@@ -26,16 +26,18 @@ namespace TestSharp
      internal class Program
      {
         //Vikram's filepaths
-        /*public static string routesfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
+        public static string routesfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
         public static string routesTZfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\RouteDistWithTZ - Sheet1.csv";
-        public static string accfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";*/
+        public static string accfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";
+        public static string transactionsfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Transactions.csv";
+        public static string bookedFlightsfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\BookedFlightRecords.csv";
 
         //Garrett's filepaths
-        public static string routesfp = @"C:\Users\knowl\Downloads\Routes - Sheet1.csv";
+        /*public static string routesfp = @"C:\Users\knowl\Downloads\Routes - Sheet1.csv";
         public static string routesTZfp = @"C:\Users\knowl\Downloads\RoutesDistWithTZ - Sheet1.csv";
         public static string accfp = @"C:\Users\knowl\Downloads\Accounts - Accounts.csv";
         public static string transactionsfp = @"C:\Users\knowl\Downloads\Transactions.csv";
-        public static string bookedFlightsfp = @"C:\Users\knowl\Downloads\BookedFlightRecords.csv";
+        public static string bookedFlightsfp = @"C:\Users\knowl\Downloads\BookedFlightRecords.csv";*/
 
         //Olivia's filepaths
         //public static string livsAccountFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Accounts.csv";
@@ -44,9 +46,9 @@ namespace TestSharp
         //  public static string livsBookRecFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";
 
 
-          // Olivia added these because they were needed across multiple methods where it didn't make sense to pass parameters
-          // we can restructure this later
-          public static string srcAirportCode;
+        // Olivia added these because they were needed across multiple methods where it didn't make sense to pass parameters
+        // we can restructure this later
+        public static string srcAirportCode;
           public static string dstAirportCode;
           public static string deptDate;
           public static string arrDate;
@@ -1393,30 +1395,110 @@ namespace TestSharp
                return flightNum;
           }
 
+
+          static void removeRoute()
+          {
+            String filePath = routesfp; // to change to something else later
+
+            //first read in display all of the flights and let the user choose what they want to remove
+
+            StreamReader reader = new StreamReader(filePath);
+
+            using (reader)
+            {
+                string line;
+                line = reader.ReadLine(); // use this line so that we don't start on the title row
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] row = line.Split(',');
+
+                    Console.WriteLine(row[0] + " " + row[1] + " " + row[2] + ".");
+
+
+                }
+            }
+            reader.Close();
+
+
+            Console.WriteLine("Enter the route number for the route that you would like to delete (PA Included): ");
+            string rninput = Console.ReadLine();
+            Console.Clear();
+
+
+            String writefp = routesfp;
+            List<String> lines = new List<String>();
+            StreamReader reader1 = new StreamReader(writefp);
+
+            if (File.Exists(writefp))
+            {
+                using (reader1)
+                {
+                    String line;
+                    line = reader1.ReadLine();
+                    lines.Add(line);
+
+                    while ((line = reader1.ReadLine()) != null)
+                    {
+
+                        String[] split = line.Split(',');
+
+                        if (split[0] != rninput)
+                        {
+                            lines.Add(line);
+                        }
+                        
+                    }
+                }
+
+                reader1.Close();
+
+
+                StreamWriter writer = new StreamWriter(writefp, false);
+                using (writer)
+                {
+                    foreach (String line in lines)
+                        writer.WriteLine(line);
+                }
+                writer.Close();
+
+                Console.WriteLine("Route successfully deleted!");
+                Thread.Sleep(3000);
+                Console.Clear();
+            }
+
+        }
           static void startLoadEngineer()
           {
                Console.WriteLine("Load Engineer");
                Console.WriteLine("1) Add Flight Route");
-               Console.WriteLine("2) Manage Flight Routes");
-               Console.WriteLine("3) Sign out");
+               Console.WriteLine("2) Edit Flight Routes");
+               Console.WriteLine("3) Delete Flight Routes");
+               Console.WriteLine("4) Sign out");
+
                int selection = Convert.ToInt32(Console.ReadLine());
                Console.Clear();
 
 
-               if (selection == 1)
-               {
-                    addRoute();
-                    startLoadEngineer();
-               }
-               if (selection == 2)
-               {
-                    editRoute();
-                    startLoadEngineer();
-               }
-               if (selection == 3)
-               {
-                    signOut();
-               }
+            if (selection == 1)
+            {
+                addRoute();
+                startLoadEngineer();
+            }
+            else if (selection == 2)
+            {
+                editRoute();
+                startLoadEngineer();
+            }
+            else if (selection == 3)
+            {
+                removeRoute();
+                startLoadEngineer();
+            }
+            else if (selection == 4)
+            {
+                signOut();
+            }
           }
 
           /* In this method, consider clearing console after user enters user ID and password,
@@ -1781,6 +1863,7 @@ namespace TestSharp
             int numflights = 0;
             double totalincome = 0.0;
             bool firsttime = true;
+            double readamtpaid;
 
             using (reader)
             {
@@ -1794,12 +1877,18 @@ namespace TestSharp
                     string[] row = line.Split(',');
                     readFnum = row[0];
 
-                    totalincome += Convert.ToDouble(row[6]);
-
-                    if (readFnum != "")
+                    if (row[6].Contains("$"))
                     {
-                        numflights++;
+                        readamtpaid = Convert.ToDouble(row[6].Substring(1));
                     }
+                    else 
+                    {
+                        readamtpaid = Convert.ToDouble(row[6]);
+                    }
+                    
+                    totalincome += readamtpaid;
+                    numflights++;
+             
                 }
                 if (firsttime)
                 {
@@ -1816,8 +1905,8 @@ namespace TestSharp
             //this is for displaying the flight and the capacity full
             String filePath1 = bookedFlightsfp;
             StreamReader reader1 = new StreamReader(filePath1);
-            string readsource = "", readdestination = "", readdate = "", readseatsleft = "", readac = "";
-            int capacity = 0;
+            string readsource = "", readdestination = "", readdate = "", readseatsleft = "", readac = "", printcapacity = "";
+            double capacity = 0;
 
             using (reader1)
             {
@@ -1837,18 +1926,19 @@ namespace TestSharp
 
                     if (readac == "737") // 189 seats
                     {
-                        capacity = (Convert.ToInt32(readseatsleft) - 189) * 100;
+                        capacity = (Convert.ToDouble(readseatsleft) / 189.0) * 100.0;
                     }
                     else if (readac == "757") // 200 seats
                     {
-                        capacity = (Convert.ToInt32(readseatsleft) - 200) * 100;
+                        capacity = (Convert.ToDouble(readseatsleft) / 200.0) * 100.0;
                     }
                     else if (readac == "787") // 242 seats
                     {
-                        capacity = (Convert.ToInt32(readseatsleft) - 242) * 100;
+                        capacity = (Convert.ToDouble(readseatsleft) / 242.0) * 100.0;
                     }
 
-                    Console.WriteLine("Date: " + readdate + " Source: " + readsource + " Destination: " + readdestination + " Capacity full: " + capacity);
+                    printcapacity = string.Format("{0:0.00}", capacity);
+                    Console.WriteLine("Date: " + readdate + " Source: " + readsource + " Destination: " + readdestination + " Capacity full: " + printcapacity + "%.");
 
                 }
             }
