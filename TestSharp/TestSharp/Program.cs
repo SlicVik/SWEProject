@@ -25,25 +25,25 @@ namespace TestSharp
 
      internal class Program
      {
-        //Vikram's filepaths
-        public static string routesfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
-        public static string routesTZfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\RouteDistWithTZ - Sheet1.csv";
-        public static string accfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";
-        public static string transactionsfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Transactions.csv";
-        public static string bookedFlightsfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\BookedFlightRecords.csv";
+          //Vikram's filepaths
+          //public static string routesfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
+          public static string routesTZfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\RouteDistWithTZ - Sheet1.csv";
+          //public static string accfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";
+          //public static string transactionsfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Transactions.csv";
+          //public static string bookedFlightsfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\BookedFlightRecords.csv";
 
-        //Garrett's filepaths
-        /*public static string routesfp = @"C:\Users\knowl\Downloads\Routes - Sheet1.csv";
-        public static string routesTZfp = @"C:\Users\knowl\Downloads\RoutesDistWithTZ - Sheet1.csv";
-        public static string accfp = @"C:\Users\knowl\Downloads\Accounts - Accounts.csv";
-        public static string transactionsfp = @"C:\Users\knowl\Downloads\Transactions.csv";
-        public static string bookedFlightsfp = @"C:\Users\knowl\Downloads\BookedFlightRecords.csv";*/
+          //Garrett's filepaths
+          /*public static string routesfp = @"C:\Users\knowl\Downloads\Routes - Sheet1.csv";
+          public static string routesTZfp = @"C:\Users\knowl\Downloads\RoutesDistWithTZ - Sheet1.csv";
+          public static string accfp = @"C:\Users\knowl\Downloads\Accounts - Accounts.csv";
+          public static string transactionsfp = @"C:\Users\knowl\Downloads\Transactions.csv";
+          public static string bookedFlightsfp = @"C:\Users\knowl\Downloads\BookedFlightRecords.csv";*/
 
-        //Olivia's filepaths
-        //public static string livsAccountFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Accounts.csv";
-        //  public static string livsTransFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Transactions.csv";
-        //  public static string livsRoutesFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Routes.csv";
-        //  public static string livsBookRecFP = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";
+          //Olivia's filepaths
+          public static string accfp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Accounts.csv";
+          public static string transactionsfp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Transactions.csv";
+          public static string routesfp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Routes.csv";
+          public static string bookedFlightsfp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";
 
 
         // Olivia added these because they were needed across multiple methods where it didn't make sense to pass parameters
@@ -1603,7 +1603,7 @@ namespace TestSharp
                if (selection == 2)
                {
                     string usrID, password, creditcardnum, firstName, lastName, bday, phone, address;
-                    StreamReader readerForUsrID = new StreamReader(accfp);
+                    //StreamReader readerForUsrID = new StreamReader(accfp);
                     bool isValidCC = true;
                     List<string> lines = new List<string>();
 
@@ -1719,8 +1719,8 @@ namespace TestSharp
                 }
 
                     usrID = randomNumberGenerator();
-                                       
-                        using (readerForUsrID)
+                    StreamReader readerForUsrID = new StreamReader(accfp);
+                    using (readerForUsrID)
                         {
                             string line;
                             string[] split;
@@ -1741,7 +1741,7 @@ namespace TestSharp
                         }
                         readerForUsrID.Close();
                         //If something is invalid, and then you try to do it right, we get an IO exception.
-                        StreamWriter writerForUsrID = new StreamWriter(accfp, false);
+                        //StreamWriter writerForUsrID = new StreamWriter(accfp, false);
                 string specialAcct = "";
                 string pointsSaved = "0";
                 string pointsSpent = "0";
@@ -1750,8 +1750,9 @@ namespace TestSharp
                         string newLine = firstName + "," + lastName + "," + address + "," + phone + "," + bday + "," + creditcardnum + "," + usrID + "," + hashPass
                             + "," + specialAcct + "," + pointsSaved + "," + pointsSpent + "," + dollarCredit;
 
-                        //For appending we don't need to use foreach if we can just append one line.
-                        using (writerForUsrID)
+                    //For appending we don't need to use foreach if we can just append one line.
+                    StreamWriter writerForUsrID = new StreamWriter(accfp, false);
+                    using (writerForUsrID)
                         {
                             foreach (string line in lines)
                             {
