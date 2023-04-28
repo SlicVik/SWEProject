@@ -233,7 +233,7 @@ namespace TestSharp
                // if 4) Cancel a Flight
                else if (inputNum == 4)
                {
-                    // code for cancel a flight               
+                    cancelAFlight();             
                }
                // if 5) Change Account Details
                // GET RID OF THIS ENTIRE CASE
@@ -294,10 +294,92 @@ namespace TestSharp
                }
           }
 
-          /* note: if I want to add "go back" functionality for any steps in bookRoundTrip(),
-          * I will need to break bookRoundTrip into a few more methods...NOT DONE HERE
-          */
-          static void bookRoundTrip()
+        static void cancelAFlight()
+        {
+            List<string> lines = new List<string>();
+            StreamReader reader1 = new StreamReader(bookedFlightsfp);
+
+            //Used to track the times gathered from the scheduled flights
+            string deptDate;
+            string deptTime;
+
+            //Used to calculate to see if there is a 1 hour difference.
+            int sysTimeInt;
+            int deptTimeInt;
+
+            //For incrementing the number of seats
+            int seats = 0;
+
+            Console.WriteLine("Enter the Flight Number you wish to cancel");
+            string flightToCancel = Console.ReadLine();
+            string cancelled = "Cancelled";
+
+            sysDate = DateTime.Now.ToString("M/d/yyyy");         // get system date
+            sysTime = DateTime.Now.ToString("h:mm tt");            // and system time
+            string dateFormat = "M/D/YYYY";
+
+            using (reader1)
+            {
+                string line;
+
+                while ((line = reader1.ReadLine()) != null)
+                {
+                    if (line.Contains(","))
+                    {
+                        string[] split = line.Split(',');
+
+                        //Check if the flight is actually in the list of transactions
+                        if (split[0].Contains(flightToCancel))
+                        {
+                            //If the date is the same, we 
+                            if (split[1].Contains(sysDate))
+                            {
+                                sysTimeInt = Convert.ToInt32(sysTime);
+                                deptTimeInt = Convert.ToInt32(split[5]);
+                                seats = Convert.ToInt32(split[10]);
+
+                                if (deptTimeInt - sysTimeInt <= 1)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("You can't cancel flights that are departing in an hour or less.");
+                                    cancelAFlight();
+                                    return;
+                                }
+                            }
+                            lines.Add(line);
+                        }
+                    }
+                }
+            }
+            reader1.Close();
+
+            StreamWriter writer1 = new StreamWriter(bookedFlightsfp, false);
+
+            seats++;
+            string seatsString = seats.ToString();
+
+            //For appending we don't need to use foreach if we can just append one line.
+            using (writer1)
+            {
+                foreach (string line in lines)
+                {
+                    writer1.WriteLine(line);
+                }
+                for (int i = 0; i < lines.Count; i++)
+                {
+                    if (lines[i].Contains(flightToCancel))
+                    {
+                        //Add our incremented seat value here if this works.
+                    }
+                }
+            }
+            writer1.Close();
+        }
+
+        /* note: if I want to add "go back" functionality for any steps in bookRoundTrip(),
+        * I will need to break bookRoundTrip into a few more methods...NOT DONE HERE
+        */
+        static void bookRoundTrip()
           {
                Console.WriteLine("Project Air");
                Console.WriteLine("Select a source airport");
