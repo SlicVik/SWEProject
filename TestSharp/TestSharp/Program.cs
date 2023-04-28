@@ -1604,7 +1604,6 @@ namespace TestSharp
                {
                     string usrID, password, creditcardnum, firstName, lastName, bday, phone, address;
                     StreamReader readerForUsrID = new StreamReader(accfp);
-                    StreamReader readerForCCN = new StreamReader(accfp);
                     bool isValidCC = true;
                     List<string> lines = new List<string>();
 
@@ -1685,6 +1684,8 @@ namespace TestSharp
                     {
                         string ccnLine;
                         string[] ccnSplit;
+                        StreamReader readerForCCN = new StreamReader(accfp);
+
                         using (readerForCCN)
                         {
                             while ((ccnLine = readerForCCN.ReadLine()) != null)
@@ -1936,7 +1937,52 @@ namespace TestSharp
 
         static void flightSummary()
         {
+            //FIRST I need to get the income per flight
+            //
+            String filePath2 = transactionsfp;
+            StreamReader reader2 = new StreamReader(filePath2);
 
+            List<String> uniqueRN = new List<String>();
+            List<String> uniqueDates = new List<String>(); // linked with unique RN
+            List<String> lines = new List<String>(); // list that has all of the lines
+
+            int ctr = 0;
+
+            using (reader2)
+            {
+                string line;
+                bool firsttime = true;
+                line = reader2.ReadLine(); // starts us off in the collumns that contain information
+
+                while ((line = reader2.ReadLine()) != null)
+                {
+                    firsttime = false;
+                    string[] row = line.Split(',');
+
+                    if (uniqueRN.Contains(row[4]) == false && uniqueDates.Contains(row[0]) == false)
+                    {
+                        uniqueRN.Add(row[4]);
+                        uniqueDates.Add(row[0]);
+                    }
+                    lines.Add(line);
+                }
+                if (firsttime)
+                {
+                    Console.WriteLine("No flights have been booked yet.");
+                    reader2.Close();
+                    return;
+                }
+            }
+            reader2.Close();
+
+            // now I have all of the unique flighnumbers and their dates stored in the lists.
+
+
+
+
+
+
+            // to find the income that each flight has generated, we first want to find all unique flight numbers in booked flights. Then I want to run the unique numbers in transactions and add together all of the flight numbers
             String filePath = transactionsfp;
 
             //use this reader to find the number of flights booked and the total amount paid
@@ -1944,8 +1990,8 @@ namespace TestSharp
             string readFnum = "";
             int numflights = 0;
             double totalincome = 0.0;
-            bool firsttime = true;
-            double readamtpaid;
+            double readamtpaid = 0.0;
+
 
             using (reader)
             {
@@ -1955,7 +2001,6 @@ namespace TestSharp
 
                 while ((line = reader.ReadLine()) != null)
                 {
-                    firsttime = false;
                     string[] row = line.Split(',');
                     readFnum = row[0];
 
@@ -1963,21 +2008,16 @@ namespace TestSharp
                     {
                         readamtpaid = Convert.ToDouble(row[6].Substring(1));
                     }
-                    else 
+                    else if (row[6].Contains("points"))
                     {
-                        readamtpaid = Convert.ToDouble(row[6]);
+                        string[] split = row[6].Split(' ');
+                        readamtpaid = Convert.ToDouble(split[0]);
                     }
-                    
+
                     totalincome += readamtpaid;
                     numflights++;
-             
                 }
-                if (firsttime)
-                {
-                    Console.WriteLine("No flights have been booked yet.");
-                    reader.Close();
-                    return;
-                }
+
             }
 
             reader.Close();
@@ -2025,8 +2065,10 @@ namespace TestSharp
                 }
             }
             reader1.Close();
+
             Thread.Sleep(5000);
         }
+
         static void startAccoMNG()
           {
                Console.WriteLine("Accountant Manager");
