@@ -60,3 +60,12 @@ C:\Users\vadda\source\repos\SWEPROJI\TestSharp\TestSharp\obj\Debug\TestSharp.csp
 C:\Users\vadda\source\repos\SWEPROJI\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.CopyComplete
 C:\Users\vadda\source\repos\SWEPROJI\TestSharp\TestSharp\obj\Debug\TestSharp.exe
 C:\Users\vadda\source\repos\SWEPROJI\TestSharp\TestSharp\obj\Debug\TestSharp.pdb
+C:\Users\vadda\source\repos\SWEPROJJ\TestSharp\TestSharp\bin\Debug\TestSharp.exe.config
+C:\Users\vadda\source\repos\SWEPROJJ\TestSharp\TestSharp\bin\Debug\TestSharp.exe
+C:\Users\vadda\source\repos\SWEPROJJ\TestSharp\TestSharp\bin\Debug\TestSharp.pdb
+C:\Users\vadda\source\repos\SWEPROJJ\TestSharp\TestSharp\bin\Debug\LINQtoCSV.dll
+C:\Users\vadda\source\repos\SWEPROJJ\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.AssemblyReference.cache
+C:\Users\vadda\source\repos\SWEPROJJ\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.CoreCompileInputs.cache
+C:\Users\vadda\source\repos\SWEPROJJ\TestSharp\TestSharp\obj\Debug\TestSharp.csproj.CopyComplete
+C:\Users\vadda\source\repos\SWEPROJJ\TestSharp\TestSharp\obj\Debug\TestSharp.exe
+C:\Users\vadda\source\repos\SWEPROJJ\TestSharp\TestSharp\obj\Debug\TestSharp.pdb

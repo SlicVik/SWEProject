@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Globalization;
 using System.Security.Cryptography;
-
+using System.Collections;
 namespace TestSharp
 {
      class Customer // use this class as a way to more easily keep track of and read multiple customers
@@ -25,25 +25,25 @@ namespace TestSharp
 
      internal class Program
      {
-          //Vikram's filepaths
-          //public static string routesfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
-          public static string routesTZfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\RouteDistWithTZ - Sheet1.csv";
-          //public static string accfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";
-          //public static string transactionsfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Transactions.csv";
-          //public static string bookedFlightsfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\BookedFlightRecords.csv";
+        //Vikram's filepaths
+        public static string routesfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Routes - Sheet1.csv";
+        public static string routesTZfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\RouteDistWithTZ - Sheet1.csv";
+        public static string accfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Accounts - Accounts.csv";
+        public static string transactionsfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\Transactions.csv";
+        public static string bookedFlightsfp = @"C:\Users\vadda\OneDrive\Documents\OS and sus\BookedFlightRecords.csv";
 
-          //Garrett's filepaths
-          /*public static string routesfp = @"C:\Users\knowl\Downloads\Routes - Sheet1.csv";
-          public static string routesTZfp = @"C:\Users\knowl\Downloads\RoutesDistWithTZ - Sheet1.csv";
-          public static string accfp = @"C:\Users\knowl\Downloads\Accounts - Accounts.csv";
-          public static string transactionsfp = @"C:\Users\knowl\Downloads\Transactions.csv";
-          public static string bookedFlightsfp = @"C:\Users\knowl\Downloads\BookedFlightRecords.csv";*/
+        //Garrett's filepaths
+        /*public static string routesfp = @"C:\Users\knowl\Downloads\Routes - Sheet1.csv";
+        public static string routesTZfp = @"C:\Users\knowl\Downloads\RoutesDistWithTZ - Sheet1.csv";
+        public static string accfp = @"C:\Users\knowl\Downloads\Accounts - Accounts.csv";
+        public static string transactionsfp = @"C:\Users\knowl\Downloads\Transactions.csv";
+        public static string bookedFlightsfp = @"C:\Users\knowl\Downloads\BookedFlightRecords.csv";*/
 
-          //Olivia's filepaths
-          public static string accfp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Accounts.csv";
-          public static string transactionsfp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Transactions.csv";
-          public static string routesfp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Routes.csv";
-          public static string bookedFlightsfp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";
+        //Olivia's filepaths
+        /*public static string accfp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Accounts.csv";
+        public static string transactionsfp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Transactions.csv";
+        public static string routesfp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\Routes.csv";
+        public static string bookedFlightsfp = @"C:\Users\12482\Documents\School\Spring 2023\EECS 3550 Software Engineering\BookedFlightRecords.csv";*/
 
 
         // Olivia added these because they were needed across multiple methods where it didn't make sense to pass parameters
@@ -1943,29 +1943,32 @@ namespace TestSharp
             String filePath2 = transactionsfp;
             StreamReader reader2 = new StreamReader(filePath2);
 
-            List<String> uniqueRN = new List<String>();
-            List<String> uniqueDates = new List<String>(); // linked with unique RN
-            List<String> lines = new List<String>(); // list that has all of the lines
-
-            int ctr = 0;
+            
+            Hashtable hash = new Hashtable(); // is a table of unique flightnums and dates so we can add the amtpaids together
+            string dateandfn = "";
 
             using (reader2)
             {
                 string line;
                 bool firsttime = true;
                 line = reader2.ReadLine(); // starts us off in the collumns that contain information
-
                 while ((line = reader2.ReadLine()) != null)
                 {
                     firsttime = false;
                     string[] row = line.Split(',');
+                    string temp = row[6].Substring(1);
+                    double convrow6 = Convert.ToDouble(row[6].Substring(1));
+                    dateandfn = row[0] + "_" + row[4]; // the divider is an underscore
 
-                    if (uniqueRN.Contains(row[4]) == false && uniqueDates.Contains(row[0]) == false)
+                    if (hash.ContainsKey(dateandfn) == false)//if the date and time are unique
                     {
-                        uniqueRN.Add(row[4]);
-                        uniqueDates.Add(row[0]);
+                        hash.Add(dateandfn, convrow6);
                     }
-                    lines.Add(line);
+                    else // if they are not unique
+                    {
+                        hash[dateandfn] = (double)hash[dateandfn] + convrow6;
+                    }
+
                 }
                 if (firsttime)
                 {
@@ -1975,13 +1978,6 @@ namespace TestSharp
                 }
             }
             reader2.Close();
-
-            // now I have all of the unique flighnumbers and their dates stored in the lists.
-
-
-
-
-
 
             // to find the income that each flight has generated, we first want to find all unique flight numbers in booked flights. Then I want to run the unique numbers in transactions and add together all of the flight numbers
             String filePath = transactionsfp;
@@ -2061,7 +2057,18 @@ namespace TestSharp
                     }
 
                     printcapacity = string.Format("{0:0.00}", capacity);
-                    Console.WriteLine("Date: " + readdate + " Source: " + readsource + " Destination: " + readdestination + " Capacity full: " + printcapacity + "%.");
+                    string hashKey = readdate + "_" + row[0];
+
+                    if (hash.ContainsKey(hashKey) == false) // if the flight numbers match in booked csv and transactions csv
+                    {
+                        Console.WriteLine("Date: " + readdate + " Source: " + readsource + " Destination: " + readdestination + " Capacity empty: " + printcapacity + "%. Income earned this flight 0.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Date: " + readdate + " Source: " + readsource + " Destination: " + readdestination + " Capacity empty: " + printcapacity + "%. Income earned this flight " + hash[hashKey] + ".");
+                    }
+
+
 
                 }
             }
