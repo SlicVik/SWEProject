@@ -202,14 +202,39 @@ namespace TestSharp
                // if 2) View Account History
                else if (inputNum == 2)
                {
-                    Console.WriteLine("View Account History (we will probably read if from a csv file)");
-                    Console.WriteLine("Flights booked: ");
-                    Console.WriteLine("Flights taken: ");
-                    Console.WriteLine("Flights Cancelled: ");
-                    Console.WriteLine("Points available");
-                    Console.WriteLine("Points used: ");
-                    // handle case to cancel AKA go back to home screen
-               }
+                string pointsSpent = "";
+                string pointsEarned = "";
+                //Console.WriteLine("View Account History (we will probably read if from a csv file)");
+
+                StreamReader reader = new StreamReader(accfp);
+                using (reader)
+                {
+                    string line;
+                    string[] split;
+
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        split = line.Split(',');
+                        //Get the amount of points earned and spent by the user.
+                        if (split[6].Contains(userID))
+                        {
+                            pointsEarned = split[9];
+                            pointsSpent = split[10];
+                        }
+                    }
+                }
+                reader.Close();
+
+                Console.Clear();
+                //Print out the statistics
+                Console.WriteLine("Flights booked: ");
+                Console.WriteLine("Flights taken: ");
+                Console.WriteLine("Flights Cancelled: ");
+                Console.WriteLine("Points available: {0}", pointsEarned);
+                Console.WriteLine("Points used: {0}", pointsSpent);
+                //Go back to home screen
+                startCustomer();
+            }
                // if 3) Print Boarding Pass
                else if (inputNum == 3)
                {
