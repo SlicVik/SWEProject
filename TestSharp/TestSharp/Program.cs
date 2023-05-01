@@ -181,7 +181,120 @@ namespace TestSharp
 
           }
 
-          static void startCustomer()
+        static void printBoardingPass()
+        {
+            //userID is already set so we know what that is. 
+            //First go through accounts and get fname, lname and store that.
+
+
+            String filePath = accfp; // to change to something else later
+
+            StreamReader reader = new StreamReader(filePath);
+            string usrfname = "", usrlname = "";
+
+            using (reader)
+            {
+                string line;
+                line = reader.ReadLine(); // use this line so that we don't start on the title row
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] row = line.Split(',');
+                    string readuserID = row[6];
+
+                    if (readuserID == userID) // if the user ID exists then exit the loop
+                    {
+                        usrfname = row[0];
+                        usrlname = row[1];
+                    }
+
+                }
+            }
+            reader.Close();
+
+            //Second go through transactions and if the name matches for the line, print dates and routenums
+
+            String filePath1 = transactionsfp; // to change to something else later
+
+            StreamReader reader1 = new StreamReader(filePath1);
+            Console.WriteLine("Print Boarding Pass ");
+            bool first = true;
+
+            using (reader1)
+            {
+                string line;
+                line = reader1.ReadLine(); // use this line so that we don't start on the title row
+
+                while ((line = reader1.ReadLine()) != null)
+                {
+                    first = false;
+                    string[] row = line.Split(',');
+                    string readfname = row[1];
+                    string readlname = row[2];
+
+                    if (readfname == usrfname && readlname == usrlname) // if the user ID exists then exit the loop
+                    {
+                        Console.WriteLine(row[0] + " " + row[4]);
+                    }
+
+                }
+                if (first)
+                {
+                    Console.WriteLine("No flights have been booked for this user!");
+                }
+            }
+            reader1.Close();
+
+            //ask the user what date and routenumber they want to see the boarding pass for
+
+            Console.WriteLine("Choose a flight by typing in the date and route number that match");
+            Console.WriteLine("Date:");
+            string usrDate = Console.ReadLine();
+            Console.WriteLine("Route Number:");
+            string usrRN = Console.ReadLine();
+
+            //Next go through booked and if the date and rn match, get the source, dest, arrival time, dest time, both tzs,
+
+            String filePath2 = bookedFlightsfp; // to change to something else later
+            StreamReader reader2 = new StreamReader(filePath2);
+            string displayDest = "", displaySource = "", displayAT = "", displayDT = "", displayDTZ = "", displayATZ = "";
+
+            using (reader2)
+            {
+                string line;
+                line = reader2.ReadLine(); // use this line so that we don't start on the title row
+
+                while ((line = reader2.ReadLine()) != null)
+                {
+                    string[] row = line.Split(',');
+                    string readDate = row[1];
+                    string readRN = row[0];
+
+                    if (readDate == usrDate && readRN == usrRN) // if the user ID exists then exit the loop
+                    {
+                        displaySource = row[2];
+                        displayDest = row[3];
+                        displayDT = row[5];
+                        displayDTZ = row[6];
+                        displayAT = row[7];
+                        displayATZ = row[8];
+                        break;
+                    }
+
+                }
+            }
+            reader2.Close();
+            //display the get^ and acc num, flight
+
+            Console.Clear();
+            Console.WriteLine("BOARDING PASS");
+            Console.WriteLine(userID);
+            Console.WriteLine(usrfname + " " + usrlname);
+            Console.WriteLine("From: " + displaySource + " To: " + displayDest);
+            Console.WriteLine("Departure Time: " + displayDT + " " + displayDTZ + " Arrival Time: " + displayAT + " " + displayATZ);
+            Thread.Sleep(5000);
+        }
+        static void startCustomer()
           {
                Console.WriteLine("Project Air");
                Console.WriteLine("1) Book a Flight");
