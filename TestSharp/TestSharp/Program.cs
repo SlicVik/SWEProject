@@ -59,11 +59,6 @@ namespace TestSharp
                return output;
           }
 
-          /*        static string SHADToStr(string input)
-               {
-
-                    return input;
-               }*/
           static void changePass()
           {
                Console.WriteLine("Enter the userID that you would like to change the password for:");
@@ -4855,25 +4850,25 @@ namespace TestSharp
                Console.Clear();
 
 
-            if (selection == 1)
-            {
-                addRoute();
-                startLoadEngineer();
-            }
-            else if (selection == 2)
-            {
-                editRoute();
-                startLoadEngineer();
-            }
-            else if (selection == 3)
-            {
-                removeRoute();
-                startLoadEngineer();
-            }
-            else if (selection == 4)
-            {
-                signOut();
-            }
+               if (selection == 1)
+               {
+                    addRoute();
+                    startLoadEngineer();
+               }
+               else if (selection == 2)
+               {
+                    editRoute();
+                    startLoadEngineer();
+               }
+               else if (selection == 3)
+               {
+                    removeRoute();
+                    startLoadEngineer();
+               }
+               else if (selection == 4)
+               {
+                    signOut();
+               }
           }
 
           /* In this method, consider clearing console after user enters user ID and password,
@@ -4924,25 +4919,25 @@ namespace TestSharp
 
                     Console.WriteLine("Address: ");
                     address = Console.ReadLine();
-                if (address == "")
-                {
-                    Console.Clear();
-                    Console.WriteLine("Must enter an address. Try again");
-                    startUserLogin();
-                    return;
-                }
+                    if (address == "")
+                    {
+                         Console.Clear();
+                         Console.WriteLine("Must enter an address. Try again");
+                         startUserLogin();
+                         return;
+                    }
 
-                Console.WriteLine("Phone Number: ");
+                    Console.WriteLine("Phone Number: ");
                     phone = Console.ReadLine();
-                if (phone == "")
-                {
-                    Console.Clear();
-                    Console.WriteLine("Must enter a phone number. Try again");
-                    startUserLogin();
-                    return;
-                }
+                    if (phone == "")
+                    {
+                         Console.Clear();
+                         Console.WriteLine("Must enter a phone number. Try again");
+                         startUserLogin();
+                         return;
+                    }
 
-                Console.WriteLine("Birthday: ");
+                    Console.WriteLine("Birthday: ");
                     bday = Console.ReadLine();
 
                     // code to validate date
@@ -4979,94 +4974,94 @@ namespace TestSharp
                         string[] ccnSplit;
                         StreamReader readerForCCN = new StreamReader(accfp);
 
-                        using (readerForCCN)
-                        {
-                            while ((ccnLine = readerForCCN.ReadLine()) != null)
-                            {
-                                ccnSplit = ccnLine.Split(',');
-                                if (ccnSplit[5].Contains(creditcardnum))
-                                {
-                                    isValidCC = false;
+                         using (readerForCCN)
+                         {
+                              while ((ccnLine = readerForCCN.ReadLine()) != null)
+                              {
+                                   ccnSplit = ccnLine.Split(',');
+                                   if (ccnSplit[5].Contains(creditcardnum))
+                                   {
+                                        isValidCC = false;
                                     
-                                }
-                            }
-                        }
-                        readerForCCN.Close();
-                        if(isValidCC == false)
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Invalid Credit Card Number, please enter again.");
-                        startUserLogin();
-                        return;
-                    }
+                                   }
+                              }
+                         }
+                         readerForCCN.Close();
+                         if(isValidCC == false)
+                         {
+                              Console.Clear();
+                              Console.WriteLine("Invalid Credit Card Number, please enter again.");
+                              startUserLogin();
+                              return;
+                         }
                     }
 
                     Console.WriteLine("Password: ");
                     password = Console.ReadLine();
                     if(password == "")
-                {
+                    {
                         Console.Clear();
                         Console.WriteLine("Must enter a password. Try again");
                         startUserLogin();
                         return;
-                }
+                    }
 
                     usrID = randomNumberGenerator();
                     StreamReader readerForUsrID = new StreamReader(accfp);
                     using (readerForUsrID)
-                        {
-                            string line;
-                            string[] split;
+                    {
+                         string line;
+                         string[] split;
 
-                            while ((line = readerForUsrID.ReadLine()) != null)
-                            {
-                                split = line.Split(',');
+                         while ((line = readerForUsrID.ReadLine()) != null)
+                         {
+                              split = line.Split(',');
 
-                                //We don't want duplicate user IDs
-                                if (split[6].Contains(usrID))
-                                {
-                                    //Generate a new random number in case we encounter a duplicate (extremely unlikely)
-                                    usrID = randomNumberGenerator();
-                                }
+                              //We don't want duplicate user IDs
+                              if (split[6].Contains(usrID))
+                              {
+                                   //Generate a new random number in case we encounter a duplicate (extremely unlikely)
+                                   usrID = randomNumberGenerator();
+                              }
 
-                                lines.Add(line);
-                            }
-                        }
-                        readerForUsrID.Close();
-                        //If something is invalid, and then you try to do it right, we get an IO exception.
-                        //StreamWriter writerForUsrID = new StreamWriter(accfp, false);
-                string specialAcct = "";
-                string pointsSaved = "0";
-                string pointsSpent = "0";
-                string dollarCredit = "0";
-                string hashPass = StrToSHAD(password);
-                        string newLine = firstName + "," + lastName + "," + address + "," + phone + "," + bday + "," + creditcardnum + "," + usrID + "," + hashPass
-                            + "," + specialAcct + "," + pointsSaved + "," + pointsSpent + "," + dollarCredit;
+                              lines.Add(line);
+                         }
+                    }
+                    readerForUsrID.Close();
+                    //If something is invalid, and then you try to do it right, we get an IO exception.
+                    //StreamWriter writerForUsrID = new StreamWriter(accfp, false);
+                    string specialAcct = "";
+                    string pointsSaved = "0";
+                    string pointsSpent = "0";
+                    string dollarCredit = "0";
+                    string hashPass = StrToSHAD(password);
+                    string newLine = firstName + "," + lastName + "," + address + "," + phone + "," + bday + "," + creditcardnum + "," + usrID + "," + hashPass
+                         + "," + specialAcct + "," + pointsSaved + "," + pointsSpent + "," + dollarCredit;
 
                     //For appending we don't need to use foreach if we can just append one line.
                     StreamWriter writerForUsrID = new StreamWriter(accfp, false);
                     using (writerForUsrID)
-                        {
-                            foreach (string line in lines)
-                            {
-                                writerForUsrID.WriteLine(line);
-                            }
-                            writerForUsrID.WriteLine(newLine);
-                        }
-                        writerForUsrID.Close();
+                    {
+                         foreach (string line in lines)
+                         {
+                              writerForUsrID.WriteLine(line);
+                         }
+                         writerForUsrID.WriteLine(newLine);
+                    }
+                    writerForUsrID.Close();
                     
-                //Return to user login screen
-                Console.WriteLine("Account Made! Sign in to use your account.");
-                Console.WriteLine("Please save your User ID and Password in a secure location:");
-                Console.WriteLine("User ID: {0}", usrID);
-                Console.WriteLine("Password: {0}", password);
-                Console.WriteLine("Press any key to return to main menu.");
-                string returnToMain = Console.ReadLine();
-                Console.Clear();
-                startUserLogin();
-                return;
+                    //Return to user login screen
+                    Console.WriteLine("Account Made! Sign in to use your account.");
+                    Console.WriteLine("Please save your User ID and Password in a secure location:");
+                    Console.WriteLine("User ID: {0}", usrID);
+                    Console.WriteLine("Password: {0}", password);
+                    Console.WriteLine("Press any key to return to main menu.");
+                    string returnToMain = Console.ReadLine();
+                    Console.Clear();
+                    startUserLogin();
+                    return;
 
-            }
+               }
                else if (selection == 1) // user login screen
                {
                     string usrID, password;
@@ -5127,7 +5122,7 @@ namespace TestSharp
         }
 
         //functionality has been added, but no checks for to make sure information is valid
-        static void assignFlight()
+          static void assignFlight()
           {
                Console.WriteLine("Available airports: BNA CLE DEN DFW DTW LAS LAX LGA MCO ORD PHX SEA");
                Console.WriteLine("Enter a source airport for the flight route you want to change the aircraft for:");
@@ -5209,7 +5204,7 @@ namespace TestSharp
 
 
           }
-        static void startMarkMNG()
+          static void startMarkMNG()
           {
                Console.WriteLine("Marketing Manager");
                Console.WriteLine("1) Assign a plane to a flight.");
@@ -5229,105 +5224,105 @@ namespace TestSharp
                return;
           }
 
-        static void flightSummary()
-        {
-            //FIRST I need to get the income per flight
-            //
-            String filePath2 = transactionsfp;
-            StreamReader reader2 = new StreamReader(filePath2);
+          static void flightSummary()
+          {
+               //FIRST I need to get the income per flight
+               //
+               String filePath2 = transactionsfp;
+               StreamReader reader2 = new StreamReader(filePath2);
 
             
-            Hashtable hash = new Hashtable(); // is a table of unique flightnums and dates so we can add the amtpaids together
-            string dateandfn = "";
+               Hashtable hash = new Hashtable(); // is a table of unique flightnums and dates so we can add the amtpaids together
+               string dateandfn = "";
 
-            using (reader2)
-            {
-                string line;
-                bool firsttime = true;
-                line = reader2.ReadLine(); // starts us off in the collumns that contain information
-                while ((line = reader2.ReadLine()) != null)
-                {
-                    firsttime = false;
-                    string[] row = line.Split(',');
-                    string temp = row[6].Substring(1);
-                    double convrow6 = Convert.ToDouble(row[6].Substring(1));
-                    dateandfn = row[0] + "_" + row[4]; // the divider is an underscore
-
-                    if (hash.ContainsKey(dateandfn) == false)//if the date and time are unique
+               using (reader2)
+               {
+                    string line;
+                    bool firsttime = true;
+                    line = reader2.ReadLine(); // starts us off in the collumns that contain information
+                    while ((line = reader2.ReadLine()) != null)
                     {
-                        hash.Add(dateandfn, convrow6);
+                         firsttime = false;
+                         string[] row = line.Split(',');
+                         string temp = row[6].Substring(1);
+                         double convrow6 = Convert.ToDouble(row[6].Substring(1));
+                         dateandfn = row[0] + "_" + row[4]; // the divider is an underscore
+
+                         if (hash.ContainsKey(dateandfn) == false)//if the date and time are unique
+                         {
+                              hash.Add(dateandfn, convrow6);
+                         }
+                         else // if they are not unique
+                         {
+                              hash[dateandfn] = (double)hash[dateandfn] + convrow6;
+                         }
+
                     }
-                    else // if they are not unique
+                    if (firsttime)
                     {
-                        hash[dateandfn] = (double)hash[dateandfn] + convrow6;
+                         Console.WriteLine("No flights have been booked yet.");
+                         reader2.Close();
+                         return;
                     }
+               }
+               reader2.Close();
 
-                }
-                if (firsttime)
-                {
-                    Console.WriteLine("No flights have been booked yet.");
-                    reader2.Close();
-                    return;
-                }
-            }
-            reader2.Close();
+               // to find the income that each flight has generated, we first want to find all unique flight numbers in booked flights. Then I want to run the unique numbers in transactions and add together all of the flight numbers
+               String filePath = transactionsfp;
 
-            // to find the income that each flight has generated, we first want to find all unique flight numbers in booked flights. Then I want to run the unique numbers in transactions and add together all of the flight numbers
-            String filePath = transactionsfp;
-
-            //use this reader to find the number of flights booked and the total amount paid
-            StreamReader reader = new StreamReader(filePath);
-            string readFnum = "";
-            int numflights = 0;
-            double totalincome = 0.0;
-            double readamtpaid = 0.0;
+               //use this reader to find the number of flights booked and the total amount paid
+               StreamReader reader = new StreamReader(filePath);
+               string readFnum = "";
+               int numflights = 0;
+               double totalincome = 0.0;
+               double readamtpaid = 0.0;
 
 
-            using (reader)
-            {
-                string line;
+               using (reader)
+               {
+                    string line;
 
-                line = reader.ReadLine(); // starts us off in the collumns that contain information
+                    line = reader.ReadLine(); // starts us off in the collumns that contain information
 
-                while ((line = reader.ReadLine()) != null)
-                {
+                    while ((line = reader.ReadLine()) != null)
+                    {
                     string[] row = line.Split(',');
                     readFnum = row[0];
 
                     if (row[6].Contains("$"))
                     {
-                        readamtpaid = Convert.ToDouble(row[6].Substring(1));
+                         readamtpaid = Convert.ToDouble(row[6].Substring(1));
                     }
                     else if (row[6].Contains("points"))
                     {
-                        string[] split = row[6].Split(' ');
-                        readamtpaid = Convert.ToDouble(split[0]);
+                         string[] split = row[6].Split(' ');
+                         readamtpaid = Convert.ToDouble(split[0]);
                     }
 
                     totalincome += readamtpaid;
                     numflights++;
-                }
+                    }
 
-            }
+               }
 
-            reader.Close();
-            Console.WriteLine("Flight Manifest");
-            Console.WriteLine("The number of flights that customers have booked are " + numflights + ".");
-            Console.WriteLine("The total amount of income generated by the flights is $" + totalincome + ".");
-            //this is for displaying the flight and the capacity full
-            String filePath1 = bookedFlightsfp;
-            StreamReader reader1 = new StreamReader(filePath1);
-            string readsource = "", readdestination = "", readdate = "", readseatsleft = "", readac = "", printcapacity = "";
-            double capacity = 0;
+               reader.Close();
+               Console.WriteLine("Flight Manifest");
+               Console.WriteLine("The number of flights that customers have booked are " + numflights + ".");
+               Console.WriteLine("The total amount of income generated by the flights is $" + totalincome + ".");
+               //this is for displaying the flight and the capacity full
+               String filePath1 = bookedFlightsfp;
+               StreamReader reader1 = new StreamReader(filePath1);
+               string readsource = "", readdestination = "", readdate = "", readseatsleft = "", readac = "", printcapacity = "";
+               double capacity = 0;
 
-            using (reader1)
-            {
-                string line;
+               using (reader1)
+               {
+                    string line;
 
-                line = reader1.ReadLine(); // starts us off in the collumns that contain information
+                    line = reader1.ReadLine(); // starts us off in the collumns that contain information
 
-                while ((line = reader1.ReadLine()) != null)
-                {
+                    while ((line = reader1.ReadLine()) != null)
+                    {
                     string[] row = line.Split(',');
 
                     readdate = row[1];
@@ -5338,15 +5333,15 @@ namespace TestSharp
 
                     if (readac == "737") // 189 seats
                     {
-                        capacity = (Convert.ToDouble(readseatsleft) / 189.0) * 100.0;
+                         capacity = (Convert.ToDouble(readseatsleft) / 189.0) * 100.0;
                     }
                     else if (readac == "757") // 200 seats
                     {
-                        capacity = (Convert.ToDouble(readseatsleft) / 200.0) * 100.0;
+                         capacity = (Convert.ToDouble(readseatsleft) / 200.0) * 100.0;
                     }
                     else if (readac == "787") // 242 seats
                     {
-                        capacity = (Convert.ToDouble(readseatsleft) / 242.0) * 100.0;
+                         capacity = (Convert.ToDouble(readseatsleft) / 242.0) * 100.0;
                     }
 
                     printcapacity = string.Format("{0:0.00}", capacity);
@@ -5354,23 +5349,23 @@ namespace TestSharp
 
                     if (hash.ContainsKey(hashKey) == false) // if the flight numbers match in booked csv and transactions csv
                     {
-                        Console.WriteLine("Date: " + readdate + " Source: " + readsource + " Destination: " + readdestination + " Capacity empty: " + printcapacity + "%. Income earned this flight 0.");
+                         Console.WriteLine("Date: " + readdate + " Source: " + readsource + " Destination: " + readdestination + " Capacity empty: " + printcapacity + "%. Income earned this flight 0.");
                     }
                     else
                     {
-                        Console.WriteLine("Date: " + readdate + " Source: " + readsource + " Destination: " + readdestination + " Capacity empty: " + printcapacity + "%. Income earned this flight " + hash[hashKey] + ".");
+                         Console.WriteLine("Date: " + readdate + " Source: " + readsource + " Destination: " + readdestination + " Capacity empty: " + printcapacity + "%. Income earned this flight " + hash[hashKey] + ".");
                     }
 
 
 
-                }
-            }
-            reader1.Close();
+                    }
+               }
+               reader1.Close();
 
-            Thread.Sleep(5000);
-        }
+               Thread.Sleep(5000);
+          }
 
-        static void startAccoMNG()
+          static void startAccoMNG()
           {
                Console.WriteLine("Accountant Manager");
                Console.WriteLine("1) Generate Flight Summary Report.");
@@ -5389,94 +5384,94 @@ namespace TestSharp
                }
           }
 
-        static void flightManifest()
-        {
-            // look through the booked flights to see if the flight is there, If we know that someone had booked it, then check transactions and see who booked it
+          static void flightManifest()
+          {
+               // look through the booked flights to see if the flight is there, If we know that someone had booked it, then check transactions and see who booked it
 
-            String filePath = bookedFlightsfp;
-            //use this reader to find the number of flights booked and the total amount paid
-            StreamReader reader = new StreamReader(filePath);
-            string readFnum = "";
-            bool firsttime = true;
+               String filePath = bookedFlightsfp;
+               //use this reader to find the number of flights booked and the total amount paid
+               StreamReader reader = new StreamReader(filePath);
+               string readFnum = "";
+               bool firsttime = true;
 
-            using (reader)
-            {
-                string line;
+               using (reader)
+               {
+                    string line;
 
-                line = reader.ReadLine(); // starts us off in the collumns that contain information
+                    line = reader.ReadLine(); // starts us off in the collumns that contain information
 
-                while ((line = reader.ReadLine()) != null)
-                {
-                    firsttime = false;
-                    string[] row = line.Split(',');
-                    readFnum = row[0];
-
-                    Console.WriteLine(readFnum);
-                }
-                if (firsttime)
-                {
-                    Console.WriteLine("No flights have been made.");
-                    reader.Close();
-                    return;
-                }
-            }
-            reader.Close();
-
-            Console.WriteLine("Enter the flight number you would like to see the flight manifest for: ");
-            string fninput = Console.ReadLine();
-            Console.Clear();
-
-            //now we know which flight number the user wants to see the flight manifest for. Now check transactions to see who is on the flight
-
-            String filePath1 = transactionsfp;
-            //use this reader to find the number of flights booked and the total amount paid
-            StreamReader reader1 = new StreamReader(filePath1);
-            string readFnum1 = "";
-            Console.WriteLine("Flight Manifest");
-            Console.WriteLine("Customers on the flight: ");
-
-            using (reader1)
-            {
-                string line;
-
-                line = reader1.ReadLine(); // starts us off in the collumns that contain information
-
-                while ((line = reader1.ReadLine()) != null)
-                {
-                    firsttime = false;
-                    string[] row = line.Split(',');
-                    readFnum1 = row[4];
-
-                    if (readFnum1 == fninput)
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        Console.WriteLine(row[1] + " " + row[2]);
+                         firsttime = false;
+                         string[] row = line.Split(',');
+                         readFnum = row[0];
+
+                         Console.WriteLine(readFnum);
                     }
-                }
-            }
-            reader1.Close();
-            Thread.Sleep(5000);
+                    if (firsttime)
+                    {
+                         Console.WriteLine("No flights have been made.");
+                         reader.Close();
+                         return;
+                    }
+               }
+               reader.Close();
 
-        }
-        static void startFligMNG()
-        {
-            Console.WriteLine("Flight Manager");
-            Console.WriteLine("1) Generate Flight Manifest.");
-            Console.WriteLine("2) Sign out.");
-            int selection = Convert.ToInt32(Console.ReadLine());
-            Console.Clear();
+               Console.WriteLine("Enter the flight number you would like to see the flight manifest for: ");
+               string fninput = Console.ReadLine();
+               Console.Clear();
 
-            if (selection == 1)
-            {
-                flightManifest();
-                startFligMNG();
-            }
-            if (selection == 2)
-            {
-                signOut();
-            }
-        }
+               //now we know which flight number the user wants to see the flight manifest for. Now check transactions to see who is on the flight
 
-        static void signOut()
+               String filePath1 = transactionsfp;
+               //use this reader to find the number of flights booked and the total amount paid
+               StreamReader reader1 = new StreamReader(filePath1);
+               string readFnum1 = "";
+               Console.WriteLine("Flight Manifest");
+               Console.WriteLine("Customers on the flight: ");
+
+               using (reader1)
+               {
+                    string line;
+
+                    line = reader1.ReadLine(); // starts us off in the collumns that contain information
+
+                    while ((line = reader1.ReadLine()) != null)
+                    {
+                         firsttime = false;
+                         string[] row = line.Split(',');
+                         readFnum1 = row[4];
+
+                         if (readFnum1 == fninput)
+                         {
+                              Console.WriteLine(row[1] + " " + row[2]);
+                         }
+                    }
+               }
+               reader1.Close();
+               Thread.Sleep(5000);
+
+          }
+          static void startFligMNG()
+          {
+               Console.WriteLine("Flight Manager");
+               Console.WriteLine("1) Generate Flight Manifest.");
+               Console.WriteLine("2) Sign out.");
+               int selection = Convert.ToInt32(Console.ReadLine());
+               Console.Clear();
+
+               if (selection == 1)
+               {
+                    flightManifest();
+                    startFligMNG();
+               }
+               if (selection == 2)
+               {
+                    signOut();
+               }
+          }
+
+          static void signOut()
           {
                Console.WriteLine("Signing out");
                Thread.Sleep(3000);
