@@ -372,7 +372,15 @@ namespace TestSharp
                                    //We found the matching flight
                                    if (split[0].Contains(notCancelled[i]))
                                    {
-
+                                        //sysTimeInt = Convert.ToInt32(sysTime);
+                                        //deptTimeInt = Convert.ToInt32(split[5]);
+                                        ////Determine if the date and time have passed. If they have, mark the flight as departed.
+                                        //if (split[1].Contains(sysDate) && (sysTime - deptTimeInt == 0))
+                                        //{
+                                        //    departedFlights.Add(split[0]);
+                                        //}
+                                        ////If they haven't, mark it as booked.
+                                        //bookedFlights.Add(split[0]);
                                    }
                               }
                          }
