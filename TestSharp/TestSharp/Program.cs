@@ -10,18 +10,6 @@ using System.Security.Cryptography;
 using System.Collections;
 namespace TestSharp
 {
-     class Customer // use this class as a way to more easily keep track of and read multiple customers
-     {
-          int ccnum; // creditcardnum
-          int credits;
-          int points;
-          string name;
-          string password;
-          string bday;
-          string usrID;
-          string address;
-          string phonenum;
-     }
 
      internal class Program
      {
@@ -354,24 +342,6 @@ namespace TestSharp
                // if 3) Print Boarding Pass
                else if (inputNum == 3)
                {
-                    /*
-                    // if there are booked flights departing in 24 hours or less
-                    Console.WriteLine("Print Boarding Pass");
-                    Console.WriteLine("Select a flight to print a boarding pass for");
-                    Console.WriteLine("1) All flight options displayed here");
-                    Console.WriteLine("2) ...");
-                    Console.WriteLine("3) ...");
-                    Console.WriteLine("Enter a number to select an option");
-                    int brdPassInput = Convert.ToInt32(Console.ReadLine());
-                    Console.Clear();
-
-                    Console.WriteLine("***Boarding pass to be displayed here***");
-                    // handle case to go back after viewing
-
-                    // else if there are no booked flights departing in 24 hours or less
-                    // Console.WriteLine("No boarding passes available to print");
-                    // then go back to previous screen
-                    */
                     printBoardingPass();
                     return;
                }
