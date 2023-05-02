@@ -306,99 +306,100 @@ namespace TestSharp
                // if 2) View Account History
                else if (inputNum == 2)
                {
-                //Used to track the points spent and earned as well as flights booked, taken, and cancelled for the printout,
-                //and also ccNum and departure date for validating the output in other csv files.
-                string pointsSpent = "";
-                string pointsEarned = "";
-                string ccNum = "";
-                List<string> notCancelled = new List<string>();
-                List<string> cancelledFlights = new List<string>();
-                List<string> bookedFlights = new List<string>();
-                List<string> departedFlights = new List<string>();
+                    //Used to track the points spent and earned as well as flights booked, taken, and cancelled for the printout,
+                    //and also ccNum and departure date for validating the output in other csv files.
+                    string pointsSpent = "";
+                    string pointsEarned = "";
+                    string ccNum = "";
+                    List<string> notCancelled = new List<string>();
+                    List<string> cancelledFlights = new List<string>();
+                    List<string> bookedFlights = new List<string>();
+                    List<string> departedFlights = new List<string>();
 
-                //Read the accounts file in to get points earned and spent, as well as credit card number for the transactions file
-                StreamReader reader = new StreamReader(accfp);
-                using (reader)
-                {
-                    string line;
-                    string[] split;
-
-                    while ((line = reader.ReadLine()) != null)
+                    //Read the accounts file in to get points earned and spent, as well as credit card number for the transactions file
+                    StreamReader reader = new StreamReader(accfp);
+                    using (reader)
                     {
-                        split = line.Split(',');
-                        //Get the amount of points earned and spent by the user.
-                        if (split[6].Contains(userID))
-                        {
-                            pointsEarned = split[9];
-                            pointsSpent = split[10];
-                            ccNum = split[5];
-                        }
-                    }
-                }
-                reader.Close();
+                         string line;
+                         string[] split;
 
-                //Read the transactions file to get flights cancelled and maybe flights taken/booked (not sure about these two yet).
-                StreamReader reader2 = new StreamReader(transactionsfp);
-                using (reader2)
-                {
+                         while ((line = reader.ReadLine()) != null)
+                         {
+                              split = line.Split(',');
+                              //Get the amount of points earned and spent by the user.
+                              if (split[6].Contains(userID))
+                              {
+                                   pointsEarned = split[9];
+                                   pointsSpent = split[10];
+                                   ccNum = split[5];
+                              }
+                         }
+                    }
+                    reader.Close();
+
+                    //Read the transactions file to get flights cancelled and maybe flights taken/booked (not sure about these two yet).
+                    StreamReader reader2 = new StreamReader(transactionsfp);
+                    using (reader2)
+                    {
                     string line;
                     string[] split;
 
                     while ((line = reader2.ReadLine()) != null)
                     {
-                        split = line.Split(',');
-                        if (split[3].Contains(ccNum))
-                        {
-                            //If the flight has been cancelled, fill up the cancelled flights array with all the cancelled flight numbers.
-                            if (split[7].Contains("Yes"))
-                            {
-                                cancelledFlights.Add(split[4]);
-                            }
-                            //Otherwise, we need to look at the departure date in BookedFlightsRecord to determine if the flight is just booked or departed.
-                            notCancelled.Add(split[4]);
-                        }
+                         split = line.Split(',');
+                         if (split[3].Contains(ccNum))
+                         {
+                              //If the flight has been cancelled, fill up the cancelled flights array with all the cancelled flight numbers.
+                              if (split[7].Contains("Yes"))
+                              {
+                                   cancelledFlights.Add(split[4]);
+                              }
+                              //Otherwise, we need to look at the departure date in BookedFlightsRecord to determine if the flight is just booked or departed.
+                              notCancelled.Add(split[4]);
+                         }
                     }
-                }
-                reader2.Close();
+                    }
+                    reader2.Close();
 
-                //Read the bookedFlightRecords file to get flights booked and departed.
-                StreamReader reader3 = new StreamReader(transactionsfp);
-                using (reader3)
-                {
-                    string line;
-                    string[] split;
-
-                    while ((line = reader3.ReadLine()) != null)
+                    //Read the bookedFlightRecords file to get flights booked and departed.
+                    StreamReader reader3 = new StreamReader(transactionsfp);
+                    using (reader3)
                     {
-                        split = line.Split(',');
-                        //Iterate through all of our flights that we found in the previous file
-                        for (int i = 0; i < notCancelled.Count(); i++)
-                        {
-                            //We found the matching flight
-                            if (split[0].Contains(notCancelled[i]))
-                            {
+                         string line;
+                         string[] split;
 
-                            }
-                        }
+                         while ((line = reader3.ReadLine()) != null)
+                         {
+                              split = line.Split(',');
+                              //Iterate through all of our flights that we found in the previous file
+                              for (int i = 0; i < notCancelled.Count(); i++)
+                              {
+                                   //We found the matching flight
+                                   if (split[0].Contains(notCancelled[i]))
+                                   {
+
+                                   }
+                              }
+                         }
                     }
-                }
-                reader3.Close();
+                    reader3.Close();
 
-                Console.Clear();
-                //Print out the statistics
-                Console.WriteLine("Flights booked: ");
-                Console.WriteLine("Flights taken: ");
-                Console.Write("Flights Cancelled: ");
-                for (int i = 0; i < cancelledFlights.Count(); i++)
-                {
-                    Console.Write(cancelledFlights[i]);
-                }
-                Console.WriteLine("Hi Vikram");
-                Console.WriteLine("Points available: {0}", pointsEarned);
-                Console.WriteLine("Points used: {0}", pointsSpent);
-                //Go back to home screen
-                startCustomer();
-            }
+                    Console.Clear();
+                    //Print out the statistics
+                    Console.WriteLine("Flights booked: ");
+                    Console.WriteLine("Flights taken: ");
+                    Console.Write("Flights Cancelled: ");
+                    for (int i = 0; i < cancelledFlights.Count(); i++)
+                    {
+                         
+                    }
+                    Console.WriteLine("Hi Vikram");
+                    Console.WriteLine("Points available: {0}", pointsEarned);
+                    Console.WriteLine("Points used: {0}", pointsSpent);
+                    //Go back to home screen
+                    startCustomer();
+                    return;
+               }
                // if 3) Print Boarding Pass
                else if (inputNum == 3)
                {
@@ -408,7 +409,8 @@ namespace TestSharp
                // if 4) Cancel a Flight
                else if (inputNum == 4)
                {
-                    cancelAFlight();             
+                    cancelAFlight();
+                    return;
                }
                // if 5) Change Account Details
                else if (inputNum == 5)
@@ -425,6 +427,9 @@ namespace TestSharp
                else
                {
                     // handle error
+                    Console.WriteLine("Enter a valid command");
+                    startCustomer();
+                    return;
                }
           }
 
@@ -470,84 +475,578 @@ namespace TestSharp
 
           static void cancelAFlight()
           {
-               List<string> lines = new List<string>();
-               StreamReader reader1 = new StreamReader(bookedFlightsfp);
-
-               //Used to track the times gathered from the scheduled flights
-               string deptDate;
-               string deptTime;
-
-               //Used to calculate to see if there is a 1 hour difference.
-               int sysTimeInt;
-               int deptTimeInt;
-
-               //For incrementing the number of seats
-               int seats = 0;
-
-               Console.WriteLine("Enter the Flight Number you wish to cancel");
-               string flightToCancel = Console.ReadLine();
-               string cancelled = "Cancelled";
-
-               sysDate = DateTime.Now.ToString("M/d/yyyy");         // get system date
-               sysTime = DateTime.Now.ToString("h:mm tt");            // and system time
-               string dateFormat = "M/D/YYYY";
-
-               using (reader1)
+               int bookNum = 0;         // will hold the previous booked flight number that we looked at
+               int count = 0;
+               int totalCount = 0;
+               string tempString;
+               List<string> candFlights = new List<string>();
+               StreamReader firstTransReader = new StreamReader(transactionsfp);
+               using (firstTransReader)
                {
                     string line;
-
-                    while ((line = reader1.ReadLine()) != null)
+                    while ((line = firstTransReader.ReadLine()) != null)
                     {
-                         if (line.Contains(","))
+                         string[] split = line.Split(',');
+                         if (split[0] != "BookedFlightNum")
                          {
-                              string[] split = line.Split(',');
-
-                              //Check if the flight is actually in the list of transactions
-                              if (split[0].Contains(flightToCancel))
+                              int bookFlightNum = Convert.ToInt32(split[0]);
+                              if (split[3] == ccnum && split[7] == "N" && bookFlightNum == bookNum)        // case for remaining connections to store after checking the first connection
                               {
-                                   //If the date is the same, we 
-                                   if (split[1].Contains(sysDate))
-                                   {
-                                        sysTimeInt = Convert.ToInt32(sysTime);
-                                        deptTimeInt = Convert.ToInt32(split[5]);
-                                        seats = Convert.ToInt32(split[10]);
-
-                                        if (deptTimeInt - sysTimeInt <= 1)
-                                        {
-                                             Console.Clear();
-                                             Console.WriteLine("You can't cancel flights that are departing in an hour or less.");
-                                             cancelAFlight();
-                                             return;
-                                        }
-                                   }
-                                   lines.Add(line);
+                                   bookNum = bookFlightNum;
+                                   tempString = count + "," + line;
+                                   candFlights.Add(tempString);
+                                   totalCount++;
+                              }
+                              else if (split[3] == ccnum && split[7] == "N" && (bookNum == 0 || bookFlightNum != bookNum))  // case for first route in flight and first route ever
+                              {
+                                   count++;
+                                   bookNum = bookFlightNum;
+                                   tempString = count + "," + line;
+                                   candFlights.Add(tempString);
+                                   totalCount++;
                               }
                          }
                     }
                }
-               reader1.Close();
+               firstTransReader.Close();
 
-               StreamWriter writer1 = new StreamWriter(bookedFlightsfp, false);
-
-               seats++;
-               string seatsString = seats.ToString();
-
-               //For appending we don't need to use foreach if we can just append one line.
-               using (writer1)
+               List<string> finalCandFlights = new List<string>();
+               string firstRow = candFlights[0];
+               string[] rowSplit = firstRow.Split(',');
+               int prevIndex = Convert.ToInt32(rowSplit[0]);
+               int listIndex = 0;
+               finalCandFlights.Add(firstRow);
+               for (int i = 1; i < totalCount; i++)
                {
-                    foreach (string line in lines)
+                    string row = candFlights[i];
+                    string[] nextRowSplit = row.Split(',');
+                    int thisIndex = Convert.ToInt32(nextRowSplit[0]);
+                    if (thisIndex == prevIndex)
                     {
-                         writer1.WriteLine(line);
+                         finalCandFlights[listIndex] = finalCandFlights[listIndex] + "," + row;
                     }
-                    for (int i = 0; i < lines.Count; i++)
+                    else
                     {
-                         if (lines[i].Contains(flightToCancel))
+                         listIndex++;
+                         finalCandFlights.Add(row);
+                         prevIndex++;
+                    }
+               }
+
+               int tracker = 0;
+               List<string> finalDisplay = new List<string>();
+               StreamReader bookReader = new StreamReader(bookedFlightsfp);
+               using (bookReader)
+               {
+                    for (int i = 0; i < count; i++)
+                    {
+                         string row = finalCandFlights[i];
+                         string[] splitRow = row.Split(',');
+
+                         string line;
+                         while ((line = bookReader.ReadLine()) != null)
                          {
-                              //Add our incremented seat value here if this works.
+                              string[] split = line.Split(',');       // holds bookedrec pieces
+                              if (split[0] == splitRow[5] && split[1] == splitRow[6])     // if date and flight num are equal
+                              {
+                                   DateTime flightDepDate;
+                                   DateTime flightDepTime;
+                                   string dateFormat = "M/d/yyyy";
+                                   string timeFormat = "h:mm tt";
+                                   sysDate = DateTime.Now.ToString("M/d/yyyy");         // get system date
+                                   sysTime = DateTime.Now.ToString("h:mm tt");            // and system time
+                                   DateTime sysDateDT;
+                                   DateTime sysTimeDT;
+                                   DateTime.TryParseExact(sysDate, dateFormat, new CultureInfo("en-US"), DateTimeStyles.None, out sysDateDT);        // convert to DateTime
+                                   DateTime.TryParseExact(sysTime, timeFormat, new CultureInfo("en-US"), DateTimeStyles.None, out sysTimeDT);        // convert to DateTime
+                                   DateTime.TryParseExact(split[1], dateFormat, new CultureInfo("en-US"), DateTimeStyles.None, out flightDepDate);
+                                   DateTime.TryParseExact(split[5], timeFormat, new CultureInfo("en-US"), DateTimeStyles.None, out flightDepTime);
+                                   DateTime latestTime = flightDepTime.AddHours(-1);
+                                   int retLatestDate = DateTime.Compare(flightDepDate, sysDateDT);
+                                   int retLatestTime = DateTime.Compare(latestTime, sysTimeDT);
+                                   if (retLatestDate > 0 || retLatestDate == 0 && retLatestTime > 0)
+                                   {
+                                        tracker++;
+                                        string tempRow = tracker + "," + row;
+                                        finalDisplay.Add(tempRow);
+                                   }
+                              }
+                         }
+                         bookReader.DiscardBufferedData();
+                         bookReader.BaseStream.Seek(0, SeekOrigin.Begin);
+
+                    }
+               }
+               bookReader.Close();
+
+               //here we print the flight options available for cancel
+               foreach (string row in finalDisplay)
+               {
+                    string[] rowElem = row.Split(',');
+                    int elemCount = rowElem.Count();
+
+                    if (elemCount == 10)
+                    {
+                         Console.WriteLine("{0}) {1}        {2}", rowElem[0], rowElem[7], rowElem[6]);
+                    }
+                    else if (elemCount == 19)
+                    {
+                         Console.WriteLine("{0}) {1}        {2}", rowElem[0], rowElem[7], rowElem[6]);
+                         Console.WriteLine("   {0}        {1}", rowElem[16], rowElem[15]);
+                    }
+                    else if (elemCount == 28)
+                    {
+                         Console.WriteLine("{0}) {1}        {2}", rowElem[0], rowElem[7], rowElem[6]);
+                         Console.WriteLine("   {0}        {1}", rowElem[16], rowElem[15]);
+                         Console.WriteLine("   {0}        {1}", rowElem[25], rowElem[24]);
+                    }
+                    else if (elemCount == 37)
+                    {
+                         Console.WriteLine("{0}) {1}        {2}", rowElem[0], rowElem[7], rowElem[6]);
+                         Console.WriteLine("   {0}        {1}", rowElem[16], rowElem[15]);
+                         Console.WriteLine("   {0}        {1}", rowElem[25], rowElem[24]);
+                         Console.WriteLine("   {0}        {1}", rowElem[34], rowElem[33]);
+                    }
+                    else if (elemCount == 46)
+                    {
+                         Console.WriteLine("{0}) {1}        {2}", rowElem[0], rowElem[7], rowElem[6]);
+                         Console.WriteLine("   {0}        {1}", rowElem[16], rowElem[15]);
+                         Console.WriteLine("   {0}        {1}", rowElem[25], rowElem[24]);
+                         Console.WriteLine("   {0}        {1}", rowElem[34], rowElem[33]);
+                         Console.WriteLine("   {0}        {1}", rowElem[43], rowElem[42]);
+                    }
+                    else if (elemCount == 55)
+                    {
+                         Console.WriteLine("{0}) {1}        {2}", rowElem[0], rowElem[7], rowElem[6]);
+                         Console.WriteLine("   {0}        {1}", rowElem[16], rowElem[15]);
+                         Console.WriteLine("   {0}        {1}", rowElem[25], rowElem[24]);
+                         Console.WriteLine("   {0}        {1}", rowElem[34], rowElem[33]);
+                         Console.WriteLine("   {0}        {1}", rowElem[43], rowElem[42]);
+                         Console.WriteLine("   {0}        {1}", rowElem[52], rowElem[51]);
+                    }
+               }
+
+               Console.WriteLine("Select an option to cancel:");
+               int inputNum = Convert.ToInt32(Console.ReadLine());
+               Console.Clear();
+
+               List<string> forBookedRecs = new List<string>();
+               string flightsToCancel = "";
+               int lastFlightIndex = 0;
+               foreach (string row in finalDisplay)
+               {
+                    Console.WriteLine(row);
+                    string[] splitcancel = row.Split(',');
+                    int inputCheck = Convert.ToInt32(splitcancel[0]);
+                    if (inputCheck == inputNum)
+                    {
+                         flightsToCancel = row;
+                         lastFlightIndex = splitcancel.Count() - 1;
+                         string tempStr;
+                         if (lastFlightIndex == 9)
+                         {
+                              tempStr = splitcancel[6] + "," + splitcancel[7];
+                              forBookedRecs.Add(tempStr);
+                         }
+                         else if (lastFlightIndex == 18)
+                         {
+                              tempStr = splitcancel[6] + "," + splitcancel[7];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[15] + "," + splitcancel[16];
+                              forBookedRecs.Add(tempStr);
+                         }
+                         else if (lastFlightIndex == 27)
+                         {
+                              tempStr = splitcancel[6] + "," + splitcancel[7];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[15] + "," + splitcancel[16];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[24] + "," + splitcancel[25];
+                              forBookedRecs.Add(tempStr);
+                         }
+                         else if (lastFlightIndex == 36)
+                         {
+                              tempStr = splitcancel[6] + "," + splitcancel[7];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[15] + "," + splitcancel[16];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[24] + "," + splitcancel[25];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[33] + "," + splitcancel[34];
+                              forBookedRecs.Add(tempStr);
+                         }
+                         else if (lastFlightIndex == 45)
+                         {
+                              tempStr = splitcancel[6] + "," + splitcancel[7];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[15] + "," + splitcancel[16];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[24] + "," + splitcancel[25];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[33] + "," + splitcancel[34];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[42] + "," + splitcancel[43];
+                              forBookedRecs.Add(tempStr);
+                         }
+                         else if (lastFlightIndex == 54)
+                         {
+                              tempStr = splitcancel[6] + "," + splitcancel[7];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[15] + "," + splitcancel[16];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[24] + "," + splitcancel[25];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[33] + "," + splitcancel[34];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[42] + "," + splitcancel[43];
+                              forBookedRecs.Add(tempStr);
+                              tempStr = splitcancel[51] + "," + splitcancel[52];
+                              forBookedRecs.Add(tempStr);
                          }
                     }
                }
-               writer1.Close();
+
+               // HANDLES CANCEL COLUMN IN TRANSACTIONS
+               StreamReader tReader = new StreamReader(transactionsfp);
+               List<string> transRows = new List<string>();
+               List<string> amountsPaid = new List<string>();
+               using (tReader)
+               {
+                    string[] flightSplit = flightsToCancel.Split(',');
+                    string line;
+                    while ((line = tReader.ReadLine()) != null)
+                    {
+                         string[] split = line.Split(',');       // holds bookedrec pieces
+                         if (split[0] == flightSplit[2])
+                         {
+                              string updateCancellation = "Y";
+                              string newRec = split[0] + "," + split[1] + "," + split[2] + "," + split[3] + "," + split[4] + "," + split[5] + "," + split[6] + "," + updateCancellation;
+                              transRows.Add(newRec);
+                              amountsPaid.Add(split[6]);         // let's add the costs to a list while we're reading...
+                         }
+                         else
+                         {
+                              transRows.Add(line);
+                         }
+                    }
+               }
+               tReader.Close();
+
+               StreamWriter tWriter = new StreamWriter(transactionsfp, false);
+               using (tWriter)
+               {
+                    foreach (string line in transRows)
+                    {
+                         tWriter.WriteLine(line);
+                    }
+               }
+               tWriter.Close();
+
+               // HANDLES CREDITING THE ACCOUNTS FILE WITH REFUND
+               double totalCost = 0;
+               bool isDollarAmt = false;
+               foreach (string price in amountsPaid)
+               {
+                    if (price.Contains("points"))
+                    {
+                         string[] splitPrice = price.Split(' ');
+                         double pointDouble = Convert.ToDouble(splitPrice[0]);
+                         totalCost += pointDouble;
+                    }
+                    else
+                    {
+                         isDollarAmt = true;
+                         double dollarDouble = Convert.ToDouble(price);
+                         totalCost += dollarDouble;
+                    }
+               }
+
+               StreamReader aReader = new StreamReader(accfp);
+               List<string> accRows = new List<string>();
+               using (aReader)
+               {
+                    string line;
+                    while ((line = aReader.ReadLine()) != null)
+                    {
+                         string[] split = line.Split(',');
+                         if (split[6] == userID)
+                         {
+                              if (isDollarAmt == true)
+                              {
+                                   string newLine = split[0] + "," + split[1] + "," + split[2] + "," + split[3] + "," + split[4] + "," + split[5] + "," + split[6] + "," + split[7] + "," + split[8]
+                                        + "," + split[9] + "," + split[10] + "," + totalCost;
+                                   accRows.Add(newLine);
+                              }
+                              else
+                              {
+                                   string pointSaved = split[9];
+                                   double totalPts = Convert.ToDouble(pointSaved);
+                                   totalPts += totalCost;
+                                   string newLine = split[0] + "," + split[1] + "," + split[2] + "," + split[3] + "," + split[4] + "," + split[5] + "," + split[6] + "," + split[7] + "," + split[8]
+                                        + "," + totalPts + "," + split[10] + "," + split[11];
+                                   accRows.Add(newLine);
+                              }
+                         }
+                         else
+                         {
+                              accRows.Add(line);
+                         }
+                    }
+               }
+               aReader.Close();
+
+               StreamWriter aWriter = new StreamWriter(accfp, false);
+               using (aWriter)
+               {
+                    foreach (string line in accRows)
+                    {
+                         aWriter.WriteLine(line);
+                    }
+               }
+               aWriter.Close();
+
+               // UPDATES SEATS
+               int bookedRecsCount = forBookedRecs.Count;
+
+               StreamReader bReader = new StreamReader(bookedFlightsfp);
+               List<string> bLines = new List<string>();
+               using (bReader)
+               {
+                    string[] rSplit = forBookedRecs[0].Split(',');
+                    string line;
+                    while (((line = bReader.ReadLine()) != null))
+                    {
+                         string[] lineSplit = line.Split(',');
+                         if (lineSplit[0] == rSplit[0] && lineSplit[1] == rSplit[1])
+                         {
+                              string seatLeft = lineSplit[10];
+                              int intSeatLeft = Convert.ToInt32(seatLeft);
+                              intSeatLeft++;
+                              string bLine = lineSplit[0] + "," + lineSplit[1] + "," + lineSplit[2] + "," + lineSplit[3] + "," + lineSplit[4] + "," + lineSplit[5] + "," + lineSplit[6]
+                                   + "," + lineSplit[7] + "," + lineSplit[8] + "," + lineSplit[9] + "," + intSeatLeft;
+                              bLines.Add(bLine);
+                         }
+                         else
+                         {
+                              bLines.Add(line);
+                         }
+                    }
+               }
+               bReader.Close();
+
+               StreamWriter bWriter = new StreamWriter(bookedFlightsfp, false);
+               using (bWriter)
+               {
+                    foreach (string line in bLines)
+                    {
+                         bWriter.WriteLine(line);
+                    }
+               }
+               bWriter.Close();
+
+
+               // if second flight
+               if (bookedRecsCount >= 2)
+               {
+                    StreamReader bReader1 = new StreamReader(bookedFlightsfp);
+                    List<string> bLines1 = new List<string>();
+                    using (bReader1)
+                    {
+                         string[] rSplit = forBookedRecs[1].Split(',');
+                         string line;
+                         while (((line = bReader1.ReadLine()) != null))
+                         {
+                              string[] lineSplit = line.Split(',');
+                              if (lineSplit[0] == rSplit[0] && lineSplit[1] == rSplit[1])
+                              {
+                                   string seatLeft = lineSplit[10];
+                                   int intSeatLeft = Convert.ToInt32(seatLeft);
+                                   intSeatLeft++;
+                                   string bLine = lineSplit[0] + "," + lineSplit[1] + "," + lineSplit[2] + "," + lineSplit[3] + "," + lineSplit[4] + "," + lineSplit[5] + "," + lineSplit[6]
+                                        + "," + lineSplit[7] + "," + lineSplit[8] + "," + lineSplit[9] + "," + intSeatLeft;
+                                   bLines1.Add(bLine);
+                              }
+                              else
+                              {
+                                   bLines1.Add(line);
+                              }
+                         }
+                    }
+                    bReader1.Close();
+
+                    StreamWriter bWriter1 = new StreamWriter(bookedFlightsfp, false);
+                    using (bWriter1)
+                    {
+                         foreach (string line in bLines1)
+                         {
+                              bWriter1.WriteLine(line);
+                         }
+                    }
+                    bWriter1.Close();
+               }
+
+               // if third flight
+               if (bookedRecsCount >= 3)
+               {
+                    StreamReader bReader2 = new StreamReader(bookedFlightsfp);
+                    List<string> bLines2 = new List<string>();
+                    using (bReader2)
+                    {
+                         string[] rSplit = forBookedRecs[2].Split(',');
+                         string line;
+                         while (((line = bReader2.ReadLine()) != null))
+                         {
+                              string[] lineSplit = line.Split(',');
+                              if (lineSplit[0] == rSplit[0] && lineSplit[1] == rSplit[1])
+                              {
+                                   string seatLeft = lineSplit[10];
+                                   int intSeatLeft = Convert.ToInt32(seatLeft);
+                                   intSeatLeft++;
+                                   string bLine = lineSplit[0] + "," + lineSplit[1] + "," + lineSplit[2] + "," + lineSplit[3] + "," + lineSplit[4] + "," + lineSplit[5] + "," + lineSplit[6]
+                                        + "," + lineSplit[7] + "," + lineSplit[8] + "," + lineSplit[9] + "," + intSeatLeft;
+                                   bLines2.Add(bLine);
+                              }
+                              else
+                              {
+                                   bLines2.Add(line);
+                              }
+                         }
+                    }
+                    bReader2.Close();
+
+                    StreamWriter bWriter2 = new StreamWriter(bookedFlightsfp, false);
+                    using (bWriter2)
+                    {
+                         foreach (string line in bLines2)
+                         {
+                              bWriter2.WriteLine(line);
+                         }
+                    }
+                    bWriter2.Close();
+               }
+
+               if (bookedRecsCount >= 4)
+               {
+                    StreamReader bReader3 = new StreamReader(bookedFlightsfp);
+                    List<string> bLines3 = new List<string>();
+                    using (bReader3)
+                    {
+                         string[] rSplit = forBookedRecs[3].Split(',');
+                         string line;
+                         while (((line = bReader3.ReadLine()) != null))
+                         {
+                              string[] lineSplit = line.Split(',');
+                              if (lineSplit[0] == rSplit[0] && lineSplit[1] == rSplit[1])
+                              {
+                                   string seatLeft = lineSplit[10];
+                                   int intSeatLeft = Convert.ToInt32(seatLeft);
+                                   intSeatLeft++;
+                                   string bLine = lineSplit[0] + "," + lineSplit[1] + "," + lineSplit[2] + "," + lineSplit[3] + "," + lineSplit[4] + "," + lineSplit[5] + "," + lineSplit[6]
+                                        + "," + lineSplit[7] + "," + lineSplit[8] + "," + lineSplit[9] + "," + intSeatLeft;
+                                   bLines3.Add(bLine);
+                              }
+                              else
+                              {
+                                   bLines3.Add(line);
+                              }
+                         }
+                    }
+                    bReader3.Close();
+
+                    StreamWriter bWriter3 = new StreamWriter(bookedFlightsfp, false);
+                    using (bWriter3)
+                    {
+                         foreach (string line in bLines3)
+                         {
+                              bWriter3.WriteLine(line);
+                         }
+                    }
+                    bWriter3.Close();
+               }
+
+               if (bookedRecsCount >= 5)
+               {
+                    StreamReader bReader4 = new StreamReader(bookedFlightsfp);
+                    List<string> bLines4 = new List<string>();
+                    using (bReader4)
+                    {
+                         string[] rSplit = forBookedRecs[4].Split(',');
+                         string line;
+                         while (((line = bReader4.ReadLine()) != null))
+                         {
+                              string[] lineSplit = line.Split(',');
+                              if (lineSplit[0] == rSplit[0] && lineSplit[1] == rSplit[1])
+                              {
+                                   string seatLeft = lineSplit[10];
+                                   int intSeatLeft = Convert.ToInt32(seatLeft);
+                                   intSeatLeft++;
+                                   string bLine = lineSplit[0] + "," + lineSplit[1] + "," + lineSplit[2] + "," + lineSplit[3] + "," + lineSplit[4] + "," + lineSplit[5] + "," + lineSplit[6]
+                                        + "," + lineSplit[7] + "," + lineSplit[8] + "," + lineSplit[9] + "," + intSeatLeft;
+                                   bLines4.Add(bLine);
+                              }
+                              else
+                              {
+                                   bLines4.Add(line);
+                              }
+                         }
+                    }
+                    bReader4.Close();
+
+                    StreamWriter bWriter4 = new StreamWriter(bookedFlightsfp, false);
+                    using (bWriter4)
+                    {
+                         foreach (string line in bLines4)
+                         {
+                              bWriter4.WriteLine(line);
+                         }
+                    }
+                    bWriter4.Close();
+               }
+
+               if (bookedRecsCount == 6)
+               {
+                    StreamReader bReader5 = new StreamReader(bookedFlightsfp);
+                    List<string> bLines5 = new List<string>();
+                    using (bReader5)
+                    {
+                         string[] rSplit = forBookedRecs[5].Split(',');
+                         string line;
+                         while (((line = bReader5.ReadLine()) != null))
+                         {
+                              string[] lineSplit = line.Split(',');
+                              if (lineSplit[0] == rSplit[0] && lineSplit[1] == rSplit[1])
+                              {
+                                   string seatLeft = lineSplit[10];
+                                   int intSeatLeft = Convert.ToInt32(seatLeft);
+                                   intSeatLeft++;
+                                   string bLine = lineSplit[0] + "," + lineSplit[1] + "," + lineSplit[2] + "," + lineSplit[3] + "," + lineSplit[4] + "," + lineSplit[5] + "," + lineSplit[6]
+                                        + "," + lineSplit[7] + "," + lineSplit[8] + "," + lineSplit[9] + "," + intSeatLeft;
+                                   bLines5.Add(bLine);
+                              }
+                              else
+                              {
+                                   bLines5.Add(line);
+                              }
+                         }
+                    }
+                    bReader5.Close();
+
+                    StreamWriter bWriter5 = new StreamWriter(bookedFlightsfp, false);
+                    using (bWriter5)
+                    {
+                         foreach (string line in bLines5)
+                         {
+                              bWriter5.WriteLine(line);
+                         }
+                    }
+                    bWriter5.Close();
+
+                    Console.WriteLine("Flight successfully cancelled!");
+                    Thread.Sleep(3000);
+                    Console.Clear();
+                    startCustomer();
+                    return;
+               }
           }
 
           /* note: if I want to add "go back" functionality for any steps in bookRoundTrip(),
