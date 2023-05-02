@@ -306,39 +306,99 @@ namespace TestSharp
                // if 2) View Account History
                else if (inputNum == 2)
                {
-                    string pointsSpent = "";
-                    string pointsEarned = "";
-                    //Console.WriteLine("View Account History (we will probably read if from a csv file)");
+                //Used to track the points spent and earned as well as flights booked, taken, and cancelled for the printout,
+                //and also ccNum and departure date for validating the output in other csv files.
+                string pointsSpent = "";
+                string pointsEarned = "";
+                string ccNum = "";
+                List<string> notCancelled = new List<string>();
+                List<string> cancelledFlights = new List<string>();
+                List<string> bookedFlights = new List<string>();
+                List<string> departedFlights = new List<string>();
 
-                    StreamReader reader = new StreamReader(accfp);
-                    using (reader)
+                //Read the accounts file in to get points earned and spent, as well as credit card number for the transactions file
+                StreamReader reader = new StreamReader(accfp);
+                using (reader)
+                {
+                    string line;
+                    string[] split;
+
+                    while ((line = reader.ReadLine()) != null)
                     {
-                         string line;
-                         string[] split;
-
-                         while ((line = reader.ReadLine()) != null)
-                         {
-                              split = line.Split(',');
-                              //Get the amount of points earned and spent by the user.
-                              if (split[6].Contains(userID))
-                              {
-                                   pointsEarned = split[9];
-                                   pointsSpent = split[10];
-                              }
-                         }
+                        split = line.Split(',');
+                        //Get the amount of points earned and spent by the user.
+                        if (split[6].Contains(userID))
+                        {
+                            pointsEarned = split[9];
+                            pointsSpent = split[10];
+                            ccNum = split[5];
+                        }
                     }
-                    reader.Close();
+                }
+                reader.Close();
 
-                    Console.Clear();
-                    //Print out the statistics
-                    Console.WriteLine("Flights booked: ");
-                    Console.WriteLine("Flights taken: ");
-                    Console.WriteLine("Flights Cancelled: ");
-                    Console.WriteLine("Points available: {0}", pointsEarned);
-                    Console.WriteLine("Points used: {0}", pointsSpent);
-                    //Go back to home screen
-                    startCustomer();
-               }
+                //Read the transactions file to get flights cancelled and maybe flights taken/booked (not sure about these two yet).
+                StreamReader reader2 = new StreamReader(transactionsfp);
+                using (reader2)
+                {
+                    string line;
+                    string[] split;
+
+                    while ((line = reader2.ReadLine()) != null)
+                    {
+                        split = line.Split(',');
+                        if (split[3].Contains(ccNum))
+                        {
+                            //If the flight has been cancelled, fill up the cancelled flights array with all the cancelled flight numbers.
+                            if (split[7].Contains("Yes"))
+                            {
+                                cancelledFlights.Add(split[4]);
+                            }
+                            //Otherwise, we need to look at the departure date in BookedFlightsRecord to determine if the flight is just booked or departed.
+                            notCancelled.Add(split[4]);
+                        }
+                    }
+                }
+                reader2.Close();
+
+                //Read the bookedFlightRecords file to get flights booked and departed.
+                StreamReader reader3 = new StreamReader(transactionsfp);
+                using (reader3)
+                {
+                    string line;
+                    string[] split;
+
+                    while ((line = reader3.ReadLine()) != null)
+                    {
+                        split = line.Split(',');
+                        //Iterate through all of our flights that we found in the previous file
+                        for (int i = 0; i < notCancelled.Count(); i++)
+                        {
+                            //We found the matching flight
+                            if (split[0].Contains(notCancelled[i]))
+                            {
+
+                            }
+                        }
+                    }
+                }
+                reader3.Close();
+
+                Console.Clear();
+                //Print out the statistics
+                Console.WriteLine("Flights booked: ");
+                Console.WriteLine("Flights taken: ");
+                Console.Write("Flights Cancelled: ");
+                for (int i = 0; i < cancelledFlights.Count(); i++)
+                {
+                    Console.Write(cancelledFlights[i]);
+                }
+                Console.WriteLine("Hi Vikram");
+                Console.WriteLine("Points available: {0}", pointsEarned);
+                Console.WriteLine("Points used: {0}", pointsSpent);
+                //Go back to home screen
+                startCustomer();
+            }
                // if 3) Print Boarding Pass
                else if (inputNum == 3)
                {
